@@ -530,22 +530,23 @@ window.addItem=function(){
   addBtn.innerText="Adding...";
   addBtn.disabled=true;
 
-  let n=pName.value,
-      cp=+pCP.value,
-      sp=+pSP.value,
-      q=+pQty.value,
-      u=pUnit.value,
+  let n = pName.value.trim(),
+      cp = +pCP.value,
+      sp = +pSP.value,
+      q = +pQty.value,
+      u = pUnit.value,
       barcode = pBarcode.value.trim();
 
-  if(!n||!cp||!sp||!q||!barcode){
+  if(!n || !cp || !sp || !q || !barcode){
     showToast("Fill all fields + barcode");
     addBtn.innerText="Add Item";
     addBtn.disabled=false;
     return;
   }
 
-  // 🚫 prevent duplicate barcode
+  // Prevent duplicate barcode
   let exists = products.find(p => p.barcode === barcode);
+
   if(exists){
     showToast("Barcode already exists ❌");
     addBtn.innerText="Add Item";
@@ -553,33 +554,34 @@ window.addItem=function(){
     return;
   }
 
-products.push({
-name,
-cp,
-sp,
-qty,
-barcode,
+  products.push({
+    name: n,
+    cp: cp,
+    sp: sp,
+    qty: q,
+    unit: u,
+    barcode: barcode,
 
-category:"",
-brand:"",
-description:"",
-image:"",
+    category: "",
+    brand: "",
+    description: "",
+    image: "",
 
-approved:false,
-onshopEnabled:false,
+    approved: false,
+    onshopEnabled: false,
 
-createdAt:Date.now()
-});
+    createdAt: Date.now()
+  });
 
   saveData();
   renderInventory();
 
-  // clear inputs
-  pName.value="";
-  pCP.value="";
-  pSP.value="";
-  pQty.value="";
-  pBarcode.value="";
+  // Clear inputs
+  pName.value = "";
+  pCP.value = "";
+  pSP.value = "";
+  pQty.value = "";
+  pBarcode.value = "";
 
   addBtn.innerText="Add Item";
   addBtn.disabled=false;

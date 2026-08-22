@@ -1296,7 +1296,7 @@ Customers: ${customers.map(c=>`${c.name}:${c.debt}`).join(", ")}
 
   try{
   const res = await fetch(
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyAF0y0of0PrLGGykM6RvubNxpUhS_as9YQ",
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1450,7 +1450,7 @@ window.addEventListener("DOMContentLoaded", () => {
         chat.innerHTML += `<div id="loading">🤖 analyzing image...</div>`;
 
         const res = await fetch(
-          "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=AIzaSyAF0y0of0PrLGGykM6RvubNxpUhS_as9YQ",
+          "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=",
           {
             method:"POST",
             headers:{ "Content-Type":"application/json" },

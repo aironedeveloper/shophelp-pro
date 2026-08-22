@@ -1285,7 +1285,7 @@ function renderChart(){
     }
   });
 }
-// ===== SHOPHELP AI =====
+// ===== AI CONFIG =====
 async function askAI(userMessage){
 
   let dataSummary = `
@@ -1294,21 +1294,22 @@ Sales: ${sales.slice(-3).map(s=>`₹${s.total}`).join(", ")}
 Customers: ${customers.map(c=>`${c.name}:${c.debt}`).join(", ")}
 `;
 
-  try {
-
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: `You are an advanced AI business assistant.
+  try{
+  const res = await fetch(
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+text: `You are an advanced AI business assistant.
 
 Rules:
 - Understand full shop data deeply
 - Give smart insights, not just answers
 - Suggest profit improvement ideas
-- Detect low stock and high sales trends
+- Detect low stock, high sales trends
 - Reply in Hinglish (short + clear)
 - Be helpful like a business advisor
 
@@ -1316,26 +1317,31 @@ User: ${userMessage}
 
 Shop Data:
 ${dataSummary}`
-      })
-    });
+            }]
+          }]
+        })
+      }
+    );
 
     const data = await res.json();
 
-    console.log("AI RESPONSE:", data);
+    console.log("FULL:", data);
 
-    if (!res.ok) {
-      return "AI Error: " + (data.error || "Something went wrong");
+    // ✅ SAFE parsing
+    if(data.candidates && data.candidates.length > 0){
+      return data.candidates[0].content.parts[0].text;
+    } else if(data.error){
+      return "Error: " + data.error.message;
+    } else {
+      return "No response 🤔";
     }
 
-    return data.reply || "No response 🤔";
-
-  } catch(err) {
-
-    console.error("AI ERROR:", err);
-
+  }catch(err){
+    console.error(err);
     return "Network error 😢";
   }
 }
+// toggle
 
 
 // send message

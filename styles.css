@@ -1,38 +1,58 @@
+```css
 /* =========================================================
-   SHOPHELP — PREMIUM MODERN UI
-   CSS ONLY — NO HTML / JS CHANGES REQUIRED
+   SHOPHELP — OUTSTANDING PREMIUM UI
+   FUTURISTIC POS • PREMIUM BUSINESS APP • MOBILE FIRST
+   CSS ONLY — EXISTING HTML + JS CAN STAY THE SAME
+   ========================================================= */
+
+
+/* =========================================================
+   DESIGN SYSTEM
    ========================================================= */
 
 :root{
-  --primary:#111827;
-  --primary-light:#1f2937;
 
-  --accent:#4f46e5;
-  --accent-2:#06b6d4;
+  --bg:#f4f7fb;
+  --bg-dark:#090d18;
 
-  --success:#10b981;
-  --success-2:#34d399;
+  --nav:#0b1020;
+  --nav-2:#11182c;
 
-  --danger:#ef4444;
-  --warning:#f59e0b;
+  --primary:#635bff;
+  --primary-2:#8b5cf6;
 
-  --bg:#eef2ff;
-  --surface:rgba(255,255,255,.72);
-  --surface-solid:#ffffff;
+  --cyan:#22d3ee;
+  --blue:#3b82f6;
 
-  --text:#111827;
-  --muted:#64748b;
+  --green:#10b981;
+  --green-2:#34d399;
 
-  --border:rgba(255,255,255,.55);
+  --red:#ef4444;
+  --orange:#f59e0b;
+
+  --text:#101828;
+  --text-soft:#667085;
+
+  --white:#ffffff;
+
+  --card:rgba(255,255,255,.78);
+  --card-solid:#ffffff;
+
+  --line:rgba(15,23,42,.08);
 
   --shadow:
-    0 20px 50px rgba(15,23,42,.10);
+    0 18px 50px rgba(15,23,42,.09);
 
-  --shadow-hover:
-    0 25px 70px rgba(79,70,229,.18);
+  --shadow-big:
+    0 30px 90px rgba(15,23,42,.15);
 
-  --radius:22px;
+  --glow:
+    0 15px 40px rgba(99,91,255,.25);
+
+  --radius:24px;
+
 }
+
 
 /* =========================================================
    RESET
@@ -49,6 +69,7 @@ html{
 }
 
 body{
+
   font-family:
     Inter,
     "Segoe UI",
@@ -59,86 +80,98 @@ body{
 
   min-height:100vh;
 
-  background:
-    radial-gradient(
-      circle at 10% 10%,
-      rgba(99,102,241,.18),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 90% 15%,
-      rgba(6,182,212,.16),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 50% 100%,
-      rgba(168,85,247,.13),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
-      #f8fafc,
-      #eef2ff,
-      #ecfeff
-    );
-
-  background-size:180% 180%;
-
-  animation:
-    shophelpBackground 18s ease infinite;
-
   padding:24px;
 
-  max-width:1500px;
+  max-width:1550px;
 
   margin:auto;
 
   overflow-x:hidden;
+
+  background:
+
+    radial-gradient(
+      circle at 5% 5%,
+      rgba(99,91,255,.15),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 95% 10%,
+      rgba(34,211,238,.13),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(139,92,246,.12),
+      transparent 28%
+    ),
+
+    linear-gradient(
+      135deg,
+      #f8fafc,
+      #eef2ff 45%,
+      #ecfeff
+    );
+
+  background-size:
+    160% 160%;
+
+  animation:
+    backgroundMove 18s ease infinite;
+
 }
 
+
 /* =========================================================
-   BACKGROUND ANIMATION
+   BACKGROUND
    ========================================================= */
 
-@keyframes shophelpBackground{
+@keyframes backgroundMove{
 
   0%{
-    background-position:0% 30%;
+    background-position:0% 20%;
   }
 
   50%{
-    background-position:100% 70%;
+    background-position:100% 80%;
   }
 
   100%{
-    background-position:0% 30%;
+    background-position:0% 20%;
   }
 
 }
+
 
 /* =========================================================
    GENERAL ANIMATIONS
    ========================================================= */
 
-@keyframes fade{
+@keyframes appear{
 
   from{
     opacity:0;
-    transform:translateY(12px) scale(.99);
+    transform:
+      translateY(18px)
+      scale(.98);
   }
 
   to{
     opacity:1;
-    transform:translateY(0) scale(1);
+    transform:
+      translateY(0)
+      scale(1);
   }
 
 }
 
-@keyframes slideUp{
+@keyframes slide{
 
   from{
     opacity:0;
-    transform:translateY(20px);
+    transform:translateY(25px);
   }
 
   to{
@@ -148,38 +181,46 @@ body{
 
 }
 
-@keyframes pulse{
+@keyframes glow{
 
-  0%{
+  0%,100%{
     box-shadow:
-      0 0 0 0 rgba(79,70,229,.35);
+      0 0 0 0 rgba(99,91,255,0);
   }
 
-  70%{
+  50%{
     box-shadow:
-      0 0 0 14px rgba(79,70,229,0);
-  }
-
-  100%{
-    box-shadow:
-      0 0 0 0 rgba(79,70,229,0);
+      0 0 0 10px rgba(99,91,255,.08);
   }
 
 }
 
-@keyframes blink{
+@keyframes shine{
+
+  0%{
+    left:-120%;
+  }
+
+  100%{
+    left:130%;
+  }
+
+}
+
+@keyframes typing{
 
   0%,100%{
-    opacity:.25;
-    transform:scale(.8);
+    opacity:.3;
+    transform:translateY(0);
   }
 
   50%{
     opacity:1;
-    transform:scale(1);
+    transform:translateY(-3px);
   }
 
 }
+
 
 /* =========================================================
    SCROLLBAR
@@ -191,28 +232,33 @@ body{
 }
 
 ::-webkit-scrollbar-track{
-  background:rgba(255,255,255,.45);
+  background:rgba(255,255,255,.5);
 }
 
 ::-webkit-scrollbar-thumb{
+
+  border-radius:20px;
+
   background:
     linear-gradient(
       180deg,
-      #6366f1,
-      #06b6d4
+      #635bff,
+      #22d3ee
     );
 
-  border-radius:20px;
 }
 
 ::-webkit-scrollbar-thumb:hover{
+
   background:
     linear-gradient(
       180deg,
       #4f46e5,
-      #0891b2
+      #06b6d4
     );
+
 }
+
 
 /* =========================================================
    HEADINGS
@@ -222,62 +268,69 @@ h1,
 h2,
 h3,
 h4{
+
   margin-bottom:15px;
-  letter-spacing:-.4px;
+
+  letter-spacing:-.6px;
+
 }
 
 h1{
-  font-weight:800;
+  font-weight:850;
 }
 
 h2{
-  font-weight:750;
+  font-weight:800;
 }
 
 h3{
-  font-weight:700;
+  font-weight:750;
 }
 
+
 /* =========================================================
-   PREMIUM CARDS
+   PREMIUM CARD
    ========================================================= */
 
 .card{
 
   position:relative;
 
+  overflow:hidden;
+
   background:
     linear-gradient(
       145deg,
-      rgba(255,255,255,.86),
-      rgba(255,255,255,.62)
+      rgba(255,255,255,.92),
+      rgba(255,255,255,.68)
     );
 
-  -webkit-backdrop-filter:blur(22px);
-  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(25px);
+  backdrop-filter:blur(25px);
 
   border:
-    1px solid rgba(255,255,255,.75);
+    1px solid rgba(255,255,255,.85);
 
   border-radius:var(--radius);
 
-  padding:24px;
+  padding:25px;
 
   margin-bottom:22px;
 
   box-shadow:var(--shadow);
 
+  animation:
+    appear .45s ease;
+
   transition:
-    transform .35s cubic-bezier(.2,.8,.2,1),
+    transform .35s ease,
     box-shadow .35s ease,
     border-color .35s ease;
 
-  animation:fade .45s ease;
-
-  overflow:hidden;
 }
 
-/* subtle light reflection */
+
+/* top light */
 
 .card::before{
 
@@ -289,19 +342,21 @@ h3{
   left:0;
 
   width:100%;
-  height:1px;
+  height:2px;
 
   background:
     linear-gradient(
       90deg,
       transparent,
-      rgba(255,255,255,.95),
+      rgba(99,91,255,.5),
+      rgba(34,211,238,.5),
       transparent
     );
 
 }
 
-/* glowing corner */
+
+/* corner glow */
 
 .card::after{
 
@@ -309,16 +364,16 @@ h3{
 
   position:absolute;
 
-  width:100px;
-  height:100px;
+  width:150px;
+  height:150px;
 
-  top:-55px;
-  right:-55px;
+  right:-80px;
+  top:-80px;
 
   background:
     radial-gradient(
       circle,
-      rgba(99,102,241,.16),
+      rgba(99,91,255,.13),
       transparent 70%
     );
 
@@ -326,17 +381,20 @@ h3{
 
 }
 
+
 .card:hover{
 
   transform:
-    translateY(-5px);
+    translateY(-6px);
 
-  box-shadow:var(--shadow-hover);
+  box-shadow:
+    var(--shadow-big);
 
   border-color:
-    rgba(99,102,241,.18);
+    rgba(99,91,255,.15);
 
 }
+
 
 /* =========================================================
    LOGIN
@@ -344,70 +402,32 @@ h3{
 
 #loginPage{
 
-  max-width:430px;
+  max-width:440px;
 
-  margin:
-    70px auto;
+  margin:65px auto;
 
   text-align:center;
 
   animation:
-    slideUp .7s cubic-bezier(.2,.8,.2,1);
+    slide .7s ease;
 
 }
 
 #loginPage .card{
 
-  padding:34px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.90),
-      rgba(255,255,255,.68)
-    );
+  padding:38px;
 
   box-shadow:
-    0 30px 80px rgba(15,23,42,.15);
+    0 35px 100px rgba(15,23,42,.18);
 
 }
 
+
 /* =========================================================
-   MENU / NAVIGATION
+   MENU — PREMIUM DARK CONTROL BAR
    ========================================================= */
 
 .menu{
-
-  display:flex;
-
-  gap:10px;
-
-  flex-wrap:wrap;
-
-  justify-content:center;
-
-  align-items:center;
-
-  background:
-    rgba(255,255,255,.62);
-
-  padding:12px;
-
-  border-radius:20px;
-
-  -webkit-backdrop-filter:
-    blur(24px);
-
-  backdrop-filter:
-    blur(24px);
-
-  border:
-    1px solid rgba(255,255,255,.75);
-
-  box-shadow:
-    0 15px 45px rgba(15,23,42,.09);
-
-  margin-bottom:28px;
 
   position:sticky;
 
@@ -415,9 +435,79 @@ h3{
 
   z-index:100;
 
-  transition:.3s ease;
+  display:flex;
+
+  flex-wrap:wrap;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:8px;
+
+  padding:10px;
+
+  margin-bottom:28px;
+
+  border-radius:22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(10,15,30,.96),
+      rgba(18,25,45,.94)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  box-shadow:
+    0 20px 55px rgba(15,23,42,.22);
+
+  -webkit-backdrop-filter:
+    blur(25px);
+
+  backdrop-filter:
+    blur(25px);
 
 }
+
+
+/* menu glow */
+
+.menu::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  border-radius:inherit;
+
+  padding:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(99,91,255,.5),
+      transparent 35%,
+      transparent 65%,
+      rgba(34,211,238,.4)
+    );
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite:xor;
+
+  mask-composite:exclude;
+
+  pointer-events:none;
+
+}
+
 
 /* =========================================================
    MENU BUTTONS
@@ -433,49 +523,61 @@ h3{
 
   gap:9px;
 
+  color:#aab4c8;
+
   background:
-    rgba(255,255,255,.65);
-
-  color:
-    #475569;
-
-  box-shadow:
-    none;
+    transparent;
 
   border:
     1px solid transparent;
 
+  box-shadow:none;
+
+  padding:
+    11px 17px;
+
+  border-radius:14px;
+
 }
+
 
 .menu button:hover{
 
-  background:
-    rgba(255,255,255,.95);
+  color:#ffffff;
 
-  color:
-    var(--accent);
+  background:
+    rgba(255,255,255,.07);
 
   box-shadow:
-    0 8px 22px rgba(79,70,229,.12);
+    none;
+
+  transform:
+    translateY(-1px);
 
 }
 
+
+/* ACTIVE MENU */
+
 .menu button.active{
+
+  color:#ffffff;
 
   background:
     linear-gradient(
       135deg,
-      #4f46e5,
-      #6366f1,
-      #06b6d4
+      #635bff,
+      #7c3aed
     );
 
-  color:#fff;
+  border:
+    1px solid rgba(255,255,255,.14);
 
   box-shadow:
-    0 10px 25px rgba(79,70,229,.30);
+    0 8px 25px rgba(99,91,255,.4);
 
 }
+
 
 /* =========================================================
    INPUTS
@@ -488,27 +590,25 @@ select{
 
   max-width:220px;
 
-  padding:14px 15px;
+  padding:
+    14px 16px;
 
   margin:6px 0;
 
-  border-radius:14px;
+  border-radius:15px;
 
   border:
-    1px solid rgba(148,163,184,.25);
+    1px solid rgba(148,163,184,.22);
 
   background:
-    rgba(255,255,255,.78);
+    rgba(255,255,255,.82);
 
-  color:#1e293b;
+  color:#172033;
 
   font-size:15px;
 
   transition:
-    border-color .25s ease,
-    box-shadow .25s ease,
-    transform .25s ease,
-    background .25s ease;
+    all .25s ease;
 
   box-shadow:
     inset 0 1px 2px rgba(15,23,42,.03);
@@ -517,18 +617,17 @@ select{
 
 input::placeholder{
 
-  color:#94a3b8;
+  color:#98a2b3;
 
 }
 
 input:hover,
 select:hover{
 
-  background:
-    rgba(255,255,255,.95);
+  background:#ffffff;
 
   border-color:
-    rgba(99,102,241,.25);
+    rgba(99,91,255,.25);
 
 }
 
@@ -537,22 +636,23 @@ select:focus{
 
   outline:none;
 
-  border-color:
-    #6366f1;
+  background:#ffffff;
 
-  background:#fff;
+  border-color:
+    #635bff;
 
   box-shadow:
-    0 0 0 4px rgba(99,102,241,.12),
-    0 8px 25px rgba(79,70,229,.08);
+    0 0 0 4px rgba(99,91,255,.11),
+    0 10px 30px rgba(99,91,255,.08);
 
   transform:
     translateY(-1px);
 
 }
 
+
 /* =========================================================
-   BUTTON SYSTEM
+   BUTTONS
    ========================================================= */
 
 button{
@@ -561,7 +661,10 @@ button{
 
   overflow:hidden;
 
-  padding:12px 20px;
+  padding:
+    12px 20px;
+
+  min-height:43px;
 
   border:none;
 
@@ -569,56 +672,31 @@ button{
 
   cursor:pointer;
 
-  font-weight:650;
+  color:#ffffff;
 
-  color:white;
+  font-weight:700;
 
-  transition:
-    transform .25s cubic-bezier(.2,.8,.2,1),
-    box-shadow .25s ease,
-    filter .25s ease;
-
-  min-height:42px;
+  letter-spacing:.05px;
 
   background:
     linear-gradient(
       135deg,
-      #4f46e5,
-      #6366f1
+      #635bff,
+      #4f46e5
     );
 
   box-shadow:
-    0 8px 20px rgba(79,70,229,.20);
+    0 9px 22px rgba(99,91,255,.22);
 
-  -webkit-backdrop-filter:
-    blur(10px);
-
-  backdrop-filter:
-    blur(10px);
-
-}
-
-button:hover{
-
-  transform:
-    translateY(-3px);
-
-  box-shadow:
-    0 14px 32px rgba(79,70,229,.30);
-
-  filter:
-    brightness(1.05);
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    filter .25s ease;
 
 }
 
-button:active{
 
-  transform:
-    translateY(0) scale(.97);
-
-}
-
-/* animated shine */
+/* shine */
 
 button::before{
 
@@ -634,19 +712,19 @@ button::before{
 
   height:300%;
 
+  transform:
+    rotate(25deg);
+
   background:
     linear-gradient(
       90deg,
       transparent,
-      rgba(255,255,255,.35),
+      rgba(255,255,255,.4),
       transparent
     );
 
-  transform:
-    rotate(25deg);
-
   transition:
-    left .65s ease;
+    left .7s ease;
 
 }
 
@@ -656,8 +734,29 @@ button:hover::before{
 
 }
 
+button:hover{
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 16px 35px rgba(99,91,255,.32);
+
+  filter:
+    brightness(1.06);
+
+}
+
+button:active{
+
+  transform:
+    scale(.96);
+
+}
+
+
 /* =========================================================
-   BUTTON TYPES
+   MAIN BUTTON
    ========================================================= */
 
 .btn-main{
@@ -665,17 +764,28 @@ button:hover::before{
   background:
     linear-gradient(
       135deg,
-      #4f46e5,
-      #6366f1,
-      #06b6d4
+      #635bff,
+      #8b5cf6,
+      #3b82f6
     );
 
   box-shadow:
-    0 10px 25px rgba(79,70,229,.25);
+    0 12px 30px rgba(99,91,255,.28);
 
 }
 
+
+/* =========================================================
+   SAVE BILL
+   ========================================================= */
+
 .btn-save{
+
+  width:100%;
+
+  padding:17px;
+
+  font-size:18px;
 
   background:
     linear-gradient(
@@ -685,23 +795,22 @@ button:hover::before{
       #34d399
     );
 
-  width:100%;
-
-  padding:16px;
-
-  font-size:18px;
-
   box-shadow:
-    0 12px 30px rgba(16,185,129,.25);
+    0 14px 35px rgba(16,185,129,.28);
 
 }
 
 .btn-save:hover{
 
   box-shadow:
-    0 18px 40px rgba(16,185,129,.35);
+    0 20px 45px rgba(16,185,129,.38);
 
 }
+
+
+/* =========================================================
+   DELETE
+   ========================================================= */
 
 .delete-btn{
 
@@ -713,7 +822,7 @@ button:hover::before{
     );
 
   box-shadow:
-    0 8px 20px rgba(239,68,68,.20);
+    0 9px 22px rgba(239,68,68,.2);
 
 }
 
@@ -727,12 +836,13 @@ button:hover::before{
     );
 
   box-shadow:
-    0 14px 30px rgba(239,68,68,.30);
+    0 16px 35px rgba(239,68,68,.32);
 
 }
 
+
 /* =========================================================
-   TABLE
+   TABLE — PREMIUM
    ========================================================= */
 
 table{
@@ -747,35 +857,35 @@ table{
 
   overflow:hidden;
 
-  border-radius:18px;
+  border-radius:20px;
 
   background:
     rgba(255,255,255,.82);
 
-  box-shadow:
-    0 12px 35px rgba(15,23,42,.08);
-
   border:
     1px solid rgba(226,232,240,.7);
 
+  box-shadow:
+    0 15px 40px rgba(15,23,42,.07);
+
 }
 
+
 th{
+
+  color:#ffffff;
+
+  font-weight:750;
 
   background:
     linear-gradient(
       135deg,
-      #111827,
-      #1e293b
+      #101828,
+      #172033
     );
 
-  color:white;
-
-  font-weight:700;
-
-  letter-spacing:.2px;
-
 }
+
 
 th,
 td{
@@ -791,15 +901,8 @@ td{
 
 }
 
-th:first-child{
-  border-top-left-radius:18px;
-}
 
-th:last-child{
-  border-top-right-radius:18px;
-}
-
-tr{
+tbody tr{
 
   transition:
     background .2s ease,
@@ -807,28 +910,34 @@ tr{
 
 }
 
+
 tbody tr:hover{
 
   background:
     linear-gradient(
       90deg,
-      rgba(99,102,241,.06),
-      rgba(6,182,212,.04)
+      rgba(99,91,255,.06),
+      rgba(34,211,238,.035)
     );
 
 }
 
+
 tbody tr:last-child td{
+
   border-bottom:none;
+
 }
+
 
 td{
 
   vertical-align:middle;
 
-  color:#334155;
+  color:#344054;
 
 }
+
 
 /* =========================================================
    INVENTORY
@@ -843,21 +952,20 @@ td{
       #eef2ff
     );
 
-  color:#334155;
+  color:#344054;
 
 }
 
 #invTable td{
 
   background:
-    rgba(255,255,255,.65);
+    rgba(255,255,255,.72);
 
 }
 
 #invTable tr:hover{
 
-  background:
-    #f8faff;
+  background:#f8faff;
 
 }
 
@@ -865,9 +973,10 @@ td{
 
   max-width:80px;
 
-  padding:9px;
+  padding:9px 10px;
 
 }
+
 
 /* =========================================================
    BILLING
@@ -914,8 +1023,9 @@ td{
 
 }
 
+
 /* =========================================================
-   BILLING PRODUCT GRID
+   PRODUCT GRID
    ========================================================= */
 
 .billing-grid{
@@ -925,7 +1035,7 @@ td{
   grid-template-columns:
     repeat(
       auto-fill,
-      minmax(140px,1fr)
+      minmax(145px,1fr)
     );
 
   gap:14px;
@@ -934,51 +1044,83 @@ td{
 
 }
 
+
 .p-item{
 
   position:relative;
 
-  border:
-    1px solid rgba(226,232,240,.8);
+  overflow:hidden;
 
-  padding:16px;
+  padding:18px 14px;
 
-  border-radius:17px;
+  border-radius:18px;
 
   text-align:center;
 
   cursor:pointer;
+
+  color:#172033;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f6f8ff
+    );
+
+  border:
+    1px solid rgba(99,91,255,.08);
+
+  box-shadow:
+    0 8px 25px rgba(15,23,42,.07);
 
   transition:
     transform .3s ease,
     box-shadow .3s ease,
     border-color .3s ease;
 
+}
+
+
+.p-item::before{
+
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  top:0;
+
+  width:100%;
+
+  height:3px;
+
   background:
     linear-gradient(
-      145deg,
-      rgba(255,255,255,.92),
-      rgba(248,250,252,.75)
+      90deg,
+      #635bff,
+      #22d3ee
     );
 
-  box-shadow:
-    0 6px 20px rgba(15,23,42,.06);
+  opacity:.7;
 
 }
+
 
 .p-item:hover{
 
   transform:
-    translateY(-5px)
+    translateY(-7px)
     scale(1.02);
 
   border-color:
-    rgba(99,102,241,.35);
+    rgba(99,91,255,.25);
 
   box-shadow:
-    0 15px 30px rgba(79,70,229,.14);
+    0 18px 40px rgba(99,91,255,.14);
 
 }
+
 
 /* =========================================================
    STAT BOXES
@@ -986,38 +1128,39 @@ td{
 
 .stat-box{
 
-  flex:1;
-
-  min-width:200px;
-
   position:relative;
 
   overflow:hidden;
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.88),
-      rgba(255,255,255,.62)
-    );
+  flex:1;
 
-  padding:22px;
+  min-width:200px;
 
-  border-radius:18px;
+  padding:24px;
+
+  border-radius:20px;
 
   text-align:center;
 
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.9),
+      rgba(255,255,255,.68)
+    );
+
   border:
-    1px solid rgba(255,255,255,.75);
+    1px solid rgba(255,255,255,.85);
 
   box-shadow:
-    0 12px 30px rgba(15,23,42,.08);
+    0 15px 40px rgba(15,23,42,.08);
 
   transition:
     transform .3s ease,
     box-shadow .3s ease;
 
 }
+
 
 .stat-box::before{
 
@@ -1034,21 +1177,46 @@ td{
   background:
     linear-gradient(
       90deg,
-      #4f46e5,
-      #06b6d4
+      #635bff,
+      #8b5cf6,
+      #22d3ee
     );
 
 }
 
+
+.stat-box::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:100px;
+  height:100px;
+
+  right:-50px;
+  bottom:-50px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(99,91,255,.13),
+      transparent 70%
+    );
+
+}
+
+
 .stat-box:hover{
 
   transform:
-    translateY(-5px);
+    translateY(-7px);
 
   box-shadow:
-    0 18px 40px rgba(79,70,229,.14);
+    0 22px 50px rgba(99,91,255,.14);
 
 }
+
 
 /* =========================================================
    DROPDOWNS
@@ -1060,24 +1228,22 @@ td{
   position:absolute;
 
   top:100%;
-
   left:0;
-
   right:0;
 
   background:
-    rgba(255,255,255,.96);
+    rgba(255,255,255,.97);
 
   -webkit-backdrop-filter:
-    blur(20px);
+    blur(25px);
 
   backdrop-filter:
-    blur(20px);
+    blur(25px);
 
   border:
     1px solid rgba(226,232,240,.8);
 
-  border-radius:15px;
+  border-radius:16px;
 
   max-height:220px;
 
@@ -1088,26 +1254,25 @@ td{
   z-index:9999;
 
   box-shadow:
-    0 20px 45px rgba(15,23,42,.16);
+    0 25px 60px rgba(15,23,42,.18);
 
   animation:
-    fade .2s ease;
+    appear .2s ease;
 
 }
 
 #productDropdown div,
 #custDropdown div{
 
-  padding:13px 15px;
+  padding:14px 16px;
 
   cursor:pointer;
 
   border-bottom:
-    1px solid rgba(226,232,240,.6);
+    1px solid rgba(226,232,240,.55);
 
   transition:
-    background .2s ease,
-    padding-left .2s ease;
+    all .2s ease;
 
 }
 
@@ -1117,43 +1282,30 @@ td{
   background:
     linear-gradient(
       90deg,
-      rgba(99,102,241,.08),
-      rgba(6,182,212,.05)
+      rgba(99,91,255,.08),
+      rgba(34,211,238,.05)
     );
 
-  padding-left:20px;
+  padding-left:21px;
 
 }
 
+
 /* =========================================================
-   CHAT WINDOW
+   CHAT — FUTURISTIC AI
    ========================================================= */
 
 #chatApp{
 
   position:fixed;
 
-  bottom:90px;
+  bottom:92px;
 
-  right:20px;
+  right:22px;
 
-  width:370px;
+  width:380px;
 
-  height:540px;
-
-  background:
-    rgba(255,255,255,.92);
-
-  -webkit-backdrop-filter:
-    blur(25px);
-
-  backdrop-filter:
-    blur(25px);
-
-  border:
-    1px solid rgba(255,255,255,.75);
-
-  border-radius:26px;
+  height:550px;
 
   display:none;
 
@@ -1163,31 +1315,53 @@ td{
 
   z-index:99999;
 
+  border-radius:28px;
+
+  background:
+    rgba(248,250,252,.96);
+
+  border:
+    1px solid rgba(255,255,255,.9);
+
+  -webkit-backdrop-filter:
+    blur(30px);
+
+  backdrop-filter:
+    blur(30px);
+
   box-shadow:
-    0 30px 80px rgba(15,23,42,.25);
+    0 35px 100px rgba(15,23,42,.28);
 
   animation:
     chatOpen .3s cubic-bezier(.2,.8,.2,1);
 
 }
 
+
 @keyframes chatOpen{
 
   from{
+
     opacity:0;
+
     transform:
-      translateY(20px)
-      scale(.94);
+      translateY(25px)
+      scale(.92);
+
   }
 
   to{
+
     opacity:1;
+
     transform:
       translateY(0)
       scale(1);
+
   }
 
 }
+
 
 /* =========================================================
    CHAT HEADER
@@ -1195,19 +1369,13 @@ td{
 
 #chatTop{
 
-  background:
-    linear-gradient(
-      135deg,
-      #111827,
-      #312e81,
-      #0e7490
-    );
+  position:relative;
 
-  color:#fff;
+  padding:17px 18px;
 
-  padding:16px 18px;
+  color:#ffffff;
 
-  font-weight:700;
+  font-weight:750;
 
   display:flex;
 
@@ -1215,10 +1383,42 @@ td{
 
   align-items:center;
 
+  background:
+    linear-gradient(
+      135deg,
+      #080d1c,
+      #17134b,
+      #075985
+    );
+
   box-shadow:
-    0 8px 20px rgba(15,23,42,.16);
+    0 10px 30px rgba(15,23,42,.2);
 
 }
+
+
+#chatTop::after{
+
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  bottom:0;
+
+  width:100%;
+  height:2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #635bff,
+      #22d3ee,
+      #8b5cf6
+    );
+
+}
+
 
 /* =========================================================
    CHAT MESSAGES
@@ -1239,20 +1439,30 @@ td{
   gap:12px;
 
   background:
+
     radial-gradient(
-      circle at 20% 20%,
-      rgba(99,102,241,.06),
-      transparent 30%
+      circle at 10% 10%,
+      rgba(99,91,255,.06),
+      transparent 25%
     ),
+
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(34,211,238,.05),
+      transparent 25%
+    ),
+
     #f8fafc;
 
 }
+
 
 .msg{
 
   max-width:78%;
 
-  padding:11px 15px;
+  padding:
+    11px 15px;
 
   border-radius:18px;
 
@@ -1260,50 +1470,53 @@ td{
 
   line-height:1.5;
 
-  animation:
-    fade .25s ease;
-
   word-wrap:break-word;
 
-  box-shadow:
-    0 4px 12px rgba(15,23,42,.05);
+  animation:
+    appear .25s ease;
 
 }
+
 
 .user{
 
   align-self:flex-end;
 
+  color:#ffffff;
+
   background:
     linear-gradient(
       135deg,
-      #4f46e5,
-      #6366f1
+      #635bff,
+      #4f46e5
     );
-
-  color:#fff;
 
   border-bottom-right-radius:5px;
 
   box-shadow:
-    0 8px 20px rgba(79,70,229,.18);
+    0 8px 22px rgba(99,91,255,.2);
 
 }
+
 
 .bot{
 
   align-self:flex-start;
 
-  background:#fff;
+  color:#172033;
 
-  color:#1e293b;
+  background:#ffffff;
 
   border:
     1px solid rgba(226,232,240,.8);
 
   border-bottom-left-radius:5px;
 
+  box-shadow:
+    0 5px 15px rgba(15,23,42,.05);
+
 }
+
 
 /* =========================================================
    TYPING
@@ -1313,27 +1526,26 @@ td{
 
   display:flex;
 
-  gap:5px;
-
   align-items:center;
+
+  gap:5px;
 
 }
 
 .typing span{
 
   width:7px;
-
   height:7px;
-
-  background:
-    #6366f1;
 
   border-radius:50%;
 
+  background:#635bff;
+
   animation:
-    blink 1s infinite;
+    typing 1s infinite;
 
 }
+
 
 /* =========================================================
    CHAT INPUT
@@ -1350,40 +1562,37 @@ td{
   padding:11px;
 
   background:
-    rgba(255,255,255,.94);
+    rgba(255,255,255,.96);
 
   border-top:
     1px solid rgba(226,232,240,.8);
 
 }
 
+
 #chatInput{
 
   flex:1;
 
+  min-width:0;
+
   height:44px;
+
+  padding:
+    0 16px;
 
   border-radius:25px;
 
-  padding:0 16px;
-
   border:
-    1px solid rgba(148,163,184,.25);
+    1px solid rgba(148,163,184,.22);
+
+  background:
+    #f7f8fc;
 
   outline:none;
 
-  min-width:0;
-
-  background:
-    #f8fafc;
-
 }
 
-#chatInput:focus{
-
-  background:#fff;
-
-}
 
 #chatInputArea button{
 
@@ -1393,6 +1602,8 @@ td{
 
   min-width:44px;
 
+  padding:0;
+
   border-radius:50%;
 
   display:flex;
@@ -1401,13 +1612,8 @@ td{
 
   justify-content:center;
 
-  padding:0;
-
-  flex-shrink:0;
-
-  font-size:16px;
-
 }
+
 
 #chatInputArea button:last-child{
 
@@ -1415,7 +1621,8 @@ td{
 
   min-width:auto;
 
-  padding:0 15px;
+  padding:
+    0 15px;
 
   border-radius:22px;
 
@@ -1423,8 +1630,9 @@ td{
 
 }
 
+
 /* =========================================================
-   CHAT TOGGLE
+   FLOATING AI BUTTON
    ========================================================= */
 
 #chatToggleBtn{
@@ -1435,13 +1643,17 @@ td{
 
   bottom:22px;
 
-  width:66px;
+  width:68px;
 
-  height:66px;
+  height:68px;
 
-  border-radius:50%;
+  padding:0;
+
+  margin:0;
 
   border:none;
+
+  border-radius:50%;
 
   display:flex;
 
@@ -1449,39 +1661,34 @@ td{
 
   justify-content:center;
 
-  background:
-    linear-gradient(
-      135deg,
-      #4f46e5,
-      #7c3aed,
-      #06b6d4
-    );
-
-  color:#fff;
-
-  cursor:pointer;
+  overflow:hidden;
 
   z-index:999999;
 
-  padding:0;
+  font-size:0;
 
-  margin:0;
+  color:#ffffff;
 
-  overflow:hidden;
+  background:
+    linear-gradient(
+      135deg,
+      #635bff,
+      #8b5cf6,
+      #22d3ee
+    );
 
   box-shadow:
-    0 12px 35px rgba(79,70,229,.35);
+    0 15px 40px rgba(99,91,255,.4);
+
+  animation:
+    glow 2.5s infinite;
 
   transition:
     transform .25s ease,
     box-shadow .25s ease;
 
-  font-size:0;
-
-  animation:
-    pulse 2.5s infinite;
-
 }
+
 
 #chatToggleBtn::before{
 
@@ -1489,27 +1696,24 @@ td{
 
 }
 
+
 #chatToggleBtn:hover{
 
   transform:
-    scale(1.1)
-    rotate(3deg);
+    scale(1.12)
+    rotate(4deg);
 
   box-shadow:
-    0 18px 45px rgba(79,70,229,.45);
+    0 20px 55px rgba(99,91,255,.5);
 
 }
+
 
 #chatToggleBtn span{
 
   position:absolute;
 
-  top:50%;
-
-  left:50%;
-
-  transform:
-    translate(-50%,-50%);
+  inset:0;
 
   display:flex;
 
@@ -1517,15 +1721,10 @@ td{
 
   justify-content:center;
 
-  width:100%;
-
-  height:100%;
-
   font-size:30px;
 
-  line-height:1;
-
 }
+
 
 /* =========================================================
    TOAST
@@ -1539,6 +1738,19 @@ td{
 
   right:24px;
 
+  z-index:999;
+
+  display:none;
+
+  padding:
+    14px 20px;
+
+  border-radius:15px;
+
+  color:#ffffff;
+
+  font-weight:700;
+
   background:
     linear-gradient(
       135deg,
@@ -1546,28 +1758,17 @@ td{
       #dc2626
     );
 
-  color:white;
-
-  padding:13px 20px;
-
-  border-radius:14px;
+  border:
+    1px solid rgba(255,255,255,.2);
 
   box-shadow:
-    0 15px 35px rgba(239,68,68,.25);
-
-  border:
-    1px solid rgba(255,255,255,.25);
-
-  display:none;
-
-  z-index:999;
-
-  font-weight:650;
+    0 20px 45px rgba(239,68,68,.28);
 
   animation:
-    fade .3s ease;
+    appear .3s ease;
 
 }
+
 
 /* =========================================================
    HIDDEN
@@ -1579,8 +1780,39 @@ td{
 
 }
 
+
 /* =========================================================
-   MOBILE
+   SELECTION
+   ========================================================= */
+
+::selection{
+
+  color:#312e81;
+
+  background:
+    rgba(99,91,255,.2);
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible{
+
+  outline:
+    3px solid rgba(99,91,255,.2);
+
+  outline-offset:2px;
+
+}
+
+
+/* =========================================================
+   MOBILE — APP-LIKE EXPERIENCE
    ========================================================= */
 
 @media(max-width:600px){
@@ -1589,39 +1821,67 @@ td{
 
     padding:10px;
 
+    background:
+
+      radial-gradient(
+        circle at 0% 0%,
+        rgba(99,91,255,.13),
+        transparent 35%
+      ),
+
+      radial-gradient(
+        circle at 100% 100%,
+        rgba(34,211,238,.1),
+        transparent 35%
+      ),
+
+      #f4f7fb;
+
   }
+
+
+  /* NAV */
 
   .menu{
 
     flex-direction:column;
 
-    gap:8px;
+    gap:7px;
 
     padding:9px;
 
     top:7px;
 
-    border-radius:17px;
+    border-radius:19px;
 
   }
+
 
   .menu button{
 
     width:100%;
 
-    min-height:44px;
+    min-height:45px;
+
+    border-radius:13px;
 
   }
 
+
+  /* CARDS */
+
   .card{
 
-    padding:16px;
+    padding:17px;
 
-    border-radius:18px;
+    border-radius:19px;
 
     margin-bottom:16px;
 
   }
+
+
+  /* INPUT */
 
   input,
   select{
@@ -1632,13 +1892,21 @@ td{
 
     font-size:16px;
 
+    min-height:46px;
+
   }
+
+
+  /* BUTTON */
 
   button{
 
-    min-height:44px;
+    min-height:45px;
 
   }
+
+
+  /* TABLE */
 
   table{
 
@@ -1650,9 +1918,10 @@ td{
 
     font-size:13px;
 
-    border-radius:14px;
+    border-radius:16px;
 
   }
+
 
   th,
   td{
@@ -1661,60 +1930,81 @@ td{
 
   }
 
+
+  /* PRODUCT GRID */
+
   .billing-grid{
 
     grid-template-columns:
       repeat(2,1fr);
 
-    gap:10px;
+    gap:9px;
 
   }
+
 
   .p-item{
 
-    padding:13px;
+    padding:14px 9px;
 
-    border-radius:14px;
+    border-radius:15px;
 
   }
+
+
+  /* STATS */
 
   .stat-box{
 
     min-width:100%;
 
-    padding:18px;
+    padding:19px;
+
+    border-radius:17px;
 
   }
 
+
+  /* CHAT */
+
   #chatApp{
-
-    position:fixed;
-
-    bottom:82px;
 
     left:8px;
 
     right:8px;
 
+    bottom:82px;
+
     width:auto;
 
     height:76vh;
 
-    border-radius:22px;
+    border-radius:23px;
 
   }
 
+
   #chatToggleBtn{
-
-    width:60px;
-
-    height:60px;
 
     right:15px;
 
     bottom:15px;
 
+    width:61px;
+
+    height:61px;
+
   }
+
+
+  #chatToggleBtn span{
+
+    font-size:27px;
+
+  }
+
+
+  /* CHAT INPUT */
 
   #chatInputArea{
 
@@ -1724,13 +2014,15 @@ td{
 
   }
 
+
   #chatInput{
 
-    height:40px;
+    height:41px;
 
     font-size:15px;
 
   }
+
 
   #chatInputArea button{
 
@@ -1740,23 +2032,20 @@ td{
 
     min-width:40px;
 
-    font-size:15px;
-
   }
+
 
   #chatInputArea button:last-child{
 
-    width:auto;
-
-    min-width:auto;
-
-    padding:0 10px;
-
-    border-radius:18px;
+    padding:
+      0 10px;
 
     font-size:12px;
 
   }
+
+
+  /* DROPDOWN */
 
   #productDropdown,
   #custDropdown{
@@ -1767,12 +2056,18 @@ td{
 
   }
 
+
+  /* INVENTORY */
+
   #invTable td,
   #invTable th{
 
     font-size:12px;
 
   }
+
+
+  /* LOGIN */
 
   #loginPage{
 
@@ -1781,49 +2076,69 @@ td{
 
   }
 
+
+  #loginPage .card{
+
+    padding:25px 18px;
+
+  }
+
+
+  /* TOAST */
+
+  #toast{
+
+    left:12px;
+
+    right:12px;
+
+    top:12px;
+
+    text-align:center;
+
+  }
+
 }
+
 
 /* =========================================================
-   EXTRA POLISH
+   EXTRA SMALL PHONES
    ========================================================= */
 
-/* Selection */
+@media(max-width:380px){
 
-::selection{
+  body{
+    padding:7px;
+  }
 
-  background:
-    rgba(99,102,241,.22);
+  .card{
+    padding:14px;
+  }
 
-  color:
-    #312e81;
+  .billing-grid{
+    gap:7px;
+  }
 
-}
-
-/* Focus accessibility */
-
-button:focus-visible,
-input:focus-visible,
-select:focus-visible{
-
-  outline:
-    3px solid rgba(99,102,241,.22);
-
-  outline-offset:2px;
+  .p-item{
+    padding:12px 6px;
+    font-size:13px;
+  }
 
 }
 
-/* Prevent ugly tap highlight */
+
+/* =========================================================
+   FINAL POLISH
+   ========================================================= */
 
 button,
-.p-item,
-.menu button{
+.menu button,
+.p-item{
 
   -webkit-tap-highlight-color:
     transparent;
 
 }
-
-/* Smooth page sections */
 
 #billingPage,
 #inventoryPage,
@@ -1832,6 +2147,7 @@ button,
 #dashboardPage{
 
   animation:
-    slideUp .35s ease;
+    slide .35s ease;
 
 }
+```

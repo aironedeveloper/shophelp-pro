@@ -49,51 +49,74 @@ ShopHelp Pro
 </div>
 
 <div id="loginPage" class="card" style="max-width:400px;text-align:center;">
-<h2>Business Login</h2>
-<input id="shopNameInput" placeholder="Shop Name">
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
+<h2 data-i18n="Business Login">Business Login</h2>
+<input id="shopNameInput" data-i18n="Shop Name" data-i18n-type="placeholder" placeholder="Shop Name">
+<input id="email" data-i18n="Email" data-i18n-type="placeholder" placeholder="Email">
+<input id="password" data-i18n="Password" data-i18n-type="placeholder" type="password" placeholder="Password">
 <div style="margin:15px 0;"></div>
 
-  <button onclick="signupUser()" class="btn-main">Signup</button>
-  <button onclick="loginUser()" class="btn-main">Login</button>
+  <button onclick="signupUser()" class="btn-main" data-i18n="Signup">Signup</button>
+  <button onclick="loginUser()" class="btn-main" data-i18n="Login">Login</button>
 </div>
 
 <div id="app" class="hidden">
 
 <div class="menu">
-<button onclick="showPage('billing')">
+<button onclick="showPage('billing')" data-i18n="Billing">
   <i class="fa-solid fa-cart-shopping"></i> Billing
 </button>
 
-<button onclick="showPage('inventory')">
+<button onclick="showPage('inventory')" data-i18n="Inventory">
   <i class="fa-solid fa-box"></i> Inventory
 </button>
 
-<button onclick="showPage('customers')">
+<button onclick="showPage('customers')" data-i18n="Customers">
   <i class="fa-solid fa-users"></i> Customers
 </button>
 
-<button onclick="showPage('expenses')">
+<button onclick="showPage('expenses')" data-i18n="Expenses">
   <i class="fa-solid fa-chart-line"></i> Expenses
 </button>
 
-<button onclick="showPage('about')">
+<button onclick="showPage('about')" data-i18n="About Us">
 <i class="fa-solid fa-circle-info"></i>
 About Us
 </button>
 
-<button onclick="logoutUser()" class="delete-btn">
+<button type="button" onclick="toggleShopHelpLanguageMenu()" data-i18n="Language">
+  🌐 Language
+</button>
+
+<div id="shophelpLanguageMenu" style="
+  display:none;
+  position:fixed;
+  top:70px;
+  right:20px;
+  z-index:10000;
+  background:#fff;
+  padding:14px;
+  border-radius:12px;
+  box-shadow:0 8px 25px rgba(0,0,0,.18);
+">
+  <label for="shophelpLanguage" style="display:block;margin-bottom:8px;" data-i18n="Language / भाषा">Language / भाषा</label>
+  <select id="shophelpLanguage" onchange="setShopHelpLanguage(this.value)"
+    style="padding:8px 10px;border-radius:8px;">
+    <option value="en">English</option>
+    <option value="hi">हिंदी</option>
+  </select>
+</div>
+
+<button onclick="logoutUser()" class="delete-btn" data-i18n="Logout">
   <i class="fa-solid fa-right-from-bracket"></i> Logout
 </button>
 </div>
 <div id="billingPage" class="card">
-<h3>Billing</h3>
+<h3 data-i18n="Billing">Billing</h3>
 
 <div style="position:relative; max-width:300px;">
 <input 
   id="custSearch" 
-  placeholder="Select customer..." 
+  data-i18n="Select customer..." data-i18n-type="placeholder" placeholder="Select customer..." 
   onclick="showCustDropdown()"
   oninput="filterCustBilling()"  
 > 
@@ -102,7 +125,7 @@ About Us
 <div style="position:relative; max-width:300px;">
   <input 
     id="productSearch" 
-    placeholder="Search product..." 
+    data-i18n="Search product..." data-i18n-type="placeholder" placeholder="Search product..." 
     oninput="filterProducts()" 
     onclick="showDropdown()"
   >
@@ -111,97 +134,98 @@ About Us
 </div>
 <input 
   id="manualBarcode" 
-  placeholder="Enter Barcode & press Enter"
+  data-i18n="Enter Barcode & press Enter" data-i18n-type="placeholder" placeholder="Enter Barcode & press Enter"
   onkeydown="handleManualBarcode(event)"
 >
-<button onclick="startBarcodeScanner()">📷 Scan Barcode</button>
+<button onclick="startBarcodeScanner()"><span data-i18n="Scan Barcode">📷 Scan Barcode</span></button>
 <div id="reader" style="width:300px;"></div>
 <table>
 <thead>
 <tr>
-  <th>Item</th>
-  <th>Qty</th>
-  <th>Price</th>
-  <th>Action</th>
+  <th data-i18n="Item">Item</th>
+  <th data-i18n="Qty">Qty</th>
+  <th data-i18n="Price">Price</th>
+  <th data-i18n="Action">Action</th>
 </tr>
 </thead>
 <tbody id="billBody"></tbody>
 </table>
-<p>Total Items: <span id="itemCount">0</span></p>
-<h2>Total ₹<span id="totalDisplay">0.00</span></h2>
-<input id="discountInput" type="number" placeholder="Discount ₹">
+<p><span data-i18n="Total Items:">Total Items:</span> <span id="itemCount">0</span></p>
+<h2><span data-i18n="Total">Total</span> ₹<span id="totalDisplay">0.00</span></h2>
+<input id="discountInput" type="number" data-i18n="Discount ₹" data-i18n-type="placeholder" placeholder="Discount ₹">
 
 <select id="gstSelect" aria-label="GST Rate">
-  <option value="0">No GST</option>
-  <option value="5">5% GST</option>
-  <option value="12">12% GST</option>
-  <option value="18">18% GST</option>
+  <option value="0" data-i18n="No GST">No GST</option>
+  <option value="5" data-i18n="5% GST">5% GST</option>
+  <option value="12" data-i18n="12% GST">12% GST</option>
+  <option value="18" data-i18n="18% GST">18% GST</option>
 </select>
 
-<h3>Final Total ₹<span id="finalTotal">0.00</span></h3>
+<h3><span data-i18n="Final Total">Final Total</span> ₹<span id="finalTotal">0.00</span></h3>
 <select id="paymentType" aria-label="Payment Type">
-  <option value="paid">Paid</option>
-  <option value="credit">Credit (Udhar)</option>
+  <option value="paid" data-i18n="Paid">Paid</option>
+  <option value="credit" data-i18n="Credit (Udhar)">Credit (Udhar)</option>
 </select>
-<button onclick="clearBill()" class="delete-btn" style="margin-bottom:10px;">Clear Bill</button>
-<button onclick="saveAndPrint()" class="btn-save">Print & Save Bill</button>
-<button onclick="downloadPDF()" class="btn-main">⬇ Download PDF</button>
-<button onclick="sendWhatsApp()" class="btn-main">📲 WhatsApp Bill</button>
+<button onclick="clearBill()" class="delete-btn" style="margin-bottom:10px;" data-i18n="Clear Bill">Clear Bill</button>
+<button onclick="saveAndPrint()" class="btn-save" data-i18n="Print & Save Bill">Print & Save Bill</button>
+<button onclick="downloadPDF()" class="btn-main" data-i18n="Download PDF">⬇ Download PDF</button>
+<button onclick="sendWhatsApp()" class="btn-main" data-i18n="WhatsApp Bill">📲 WhatsApp Bill</button>
 </div>
 
 <div id="inventoryPage" class="card hidden">
   <div id="lowStockWarning" style="color:red;font-weight:bold;margin:10px 0;"></div>
-<h3>Inventory</h3>
+<h3 data-i18n="Inventory">Inventory</h3>
 <input id="searchProduct" placeholder="Search product..." oninput="searchProducts()">
-<input id="pBarcode" placeholder="Barcode (Scan or Enter)">
+<input id="pBarcode" data-i18n="Barcode (Scan or Enter)" data-i18n-type="placeholder" placeholder="Barcode (Scan or Enter)">
 
-<input id="pName" placeholder="Product Name">
-<input id="pCP" type="number" placeholder="Cost Price">
-<input id="pSP" type="number" placeholder="Sell Price">
-<input id="pQty" type="number" placeholder="Stock">
+<input id="pName" data-i18n="Product Name" data-i18n-type="placeholder" placeholder="Product Name">
+<input id="pCP" type="number" data-i18n="Cost Price" data-i18n-type="placeholder" placeholder="Cost Price">
+<input id="pSP" type="number" data-i18n="Sell Price" data-i18n-type="placeholder" placeholder="Sell Price">
+<input id="pQty" type="number" data-i18n="Stock" data-i18n-type="placeholder" placeholder="Stock">
 
 
 <select id="pUnit" aria-label="Unit">
-<option>PCS</option>
-<option>KG</option>
-<option>L</option>
+<option data-i18n="PCS">PCS</option>
+<option data-i18n="KG">KG</option>
+<option data-i18n="L">L</option>
 </select>
 
-<button onclick="addItem()" class="btn-main" id="addBtn">Add Item</button>
+<button onclick="addItem()" class="btn-main" id="addBtn" data-i18n="Add Item">Add Item</button>
 <table id="invTable"></table>
 </div>
 
 <div id="customersPage" class="card hidden">
-<h3>Customers</h3>
-<input placeholder="Search customer..." oninput="searchCust(this.value)">
-<input id="cName" placeholder="Customer Name">
-<input id="cPhone" placeholder="Phone">
-<button onclick="addCust()" class="btn-main">Add Customer</button>
+<h3 data-i18n="Customers">Customers</h3>
+<input data-i18n="Search customer..." data-i18n-type="placeholder" placeholder="Search customer..." oninput="searchCust(this.value)">
+<input id="cName" data-i18n="Customer Name" data-i18n-type="placeholder" placeholder="Customer Name">
+<input id="cPhone" data-i18n="Phone" data-i18n-type="placeholder" placeholder="Phone">
+<button onclick="addCust()" class="btn-main" data-i18n="Add Customer">Add Customer</button>
 <table id="custTable"></table>
 </div>
 <div id="expensesPage" class="card hidden">
-<h3>Expenses</h3>
+<h3 data-i18n="Expenses">Expenses</h3>
 
-<input id="expenseName" placeholder="Expense Name">
-<input id="expenseAmount" type="number" placeholder="Amount">
+<input id="expenseName" data-i18n="Expense Name" data-i18n-type="placeholder" placeholder="Expense Name">
+<input id="expenseAmount" type="number" data-i18n="Amount" data-i18n-type="placeholder" placeholder="Amount">
 <input id="expenseDate" type="date" aria-label="Expense Date">
 
 <select id="expenseType" aria-label="Expense Type">
-<option value="daily">Daily</option>
-<option value="monthly">Monthly</option>
-<option value="yearly">Yearly</option>
+<option value="daily" data-i18n="Daily">Daily</option>
+<option value="monthly" data-i18n="Monthly">Monthly</option>
+<option value="yearly" data-i18n="Yearly">Yearly</option>
 </select>
 
-<button onclick="addNewExpense()" class="btn-main">Save Expense</button>
+<button onclick="addNewExpense()" class="btn-main" data-i18n="Save Expense">Save Expense</button>
 
 <div style="display:flex;gap:15px;flex-wrap:wrap;margin-top:20px;">
-<div class="stat-box"><h4>Gross Profit</h4><p id="stProfit">₹0</p></div>
-<div class="stat-box"><h4>Expense</h4><p id="stExp">₹0</p></div>
-<div class="stat-box"><h4>Net Profit</h4><p id="stNet">₹0</p></div>
+<div class="stat-box"><h4 data-i18n="Gross Profit">Gross Profit</h4><p id="stProfit">₹0</p></div>
+<div class="stat-box"><h4 data-i18n="Expense">Expense</h4><p id="stExp">₹0</p></div>
+<div class="stat-box"><h4 data-i18n="Net Profit">Net Profit</h4><p id="stNet">₹0</p></div>
 </div>
 <canvas id="salesChart" height="100"></canvas>
 <input 
   id="invoiceSearch" 
+  data-i18n="Search invoice (name, date, amount...)" data-i18n-type="placeholder"
   placeholder="Search invoice (name, date, amount...)" 
   oninput="searchInvoices()" 
   style="max-width:300px;"
@@ -209,12 +233,12 @@ About Us
 <table>
 <thead>
 <tr>
-<th>Date</th>
-<th>Description</th>
-<th>Amount</th>
-<th>Type</th>
-<th>Profit / Loss</th>  <!-- ✅ NEW -->
-<th>Action</th>
+<th data-i18n="Date">Date</th>
+<th data-i18n="Description">Description</th>
+<th data-i18n="Amount">Amount</th>
+<th data-i18n="Type">Type</th>
+<th data-i18n="Profit / Loss">Profit / Loss</th>  <!-- ✅ NEW -->
+<th data-i18n="Action">Action</th>
 </tr>
 </thead>
 <tbody id="finBody"></tbody>
@@ -223,7 +247,7 @@ About Us
 <!-- ABOUT PAGE -->
 <div id="aboutPage" class="card hidden">
 
-<h2>About Us</h2>
+<h2 data-i18n="About Us">About Us</h2>
 
 <p style="margin-top:15px;line-height:1.8;color:#334155;font-size:16px;">
 
@@ -246,7 +270,7 @@ box-shadow:0 10px 30px rgba(0,0,0,0.08);
 border:1px solid rgba(0,0,0,0.05);
 ">
 
-<h2>Our Partner</h2>
+<h2 data-i18n="Our Partner">Our Partner</h2>
 
 <p style="margin-top:10px;line-height:1.8;color:#334155;">
 
@@ -261,6 +285,163 @@ border:1px solid rgba(0,0,0,0.05);
 
 
 </div>
+<script>
+/* =========================
+   ShopHelp Pro Language System
+   Only language is stored locally.
+   Firestore/backend code below is untouched.
+   ========================= */
+
+const SHOPHELP_TRANSLATIONS = {
+  "Language": "भाषा",
+  "Language / भाषा": "भाषा",
+  "Business Login": "बिज़नेस लॉगिन",
+  "Shop Name": "दुकान का नाम",
+  "Email": "ईमेल",
+  "Password": "पासवर्ड",
+  "Signup": "साइन अप",
+  "Login": "लॉगिन",
+  "Billing": "बिलिंग",
+  "Inventory": "इन्वेंटरी",
+  "Customers": "ग्राहक",
+  "Expenses": "खर्च",
+  "About Us": "हमारे बारे में",
+  "Logout": "लॉगआउट",
+  "Search product...": "उत्पाद खोजें...",
+  "Select customer...": "ग्राहक चुनें...",
+  "Enter Barcode & press Enter": "बारकोड दर्ज करें और Enter दबाएं",
+  "Scan Barcode": "बारकोड स्कैन करें",
+  "Item": "वस्तु",
+  "Qty": "मात्रा",
+  "Price": "कीमत",
+  "Action": "कार्य",
+  "Total": "कुल",
+  "Total Items:": "कुल वस्तुएं:",
+  "Final Total": "अंतिम कुल",
+  "Discount ₹": "छूट ₹",
+  "No GST": "कोई GST नहीं",
+  "Paid": "भुगतान किया",
+  "Credit (Udhar)": "उधार",
+  "Clear Bill": "बिल साफ करें",
+  "Print & Save Bill": "बिल प्रिंट और सेव करें",
+  "Download PDF": "PDF डाउनलोड करें",
+  "WhatsApp Bill": "WhatsApp बिल",
+  "Product": "उत्पाद",
+  "Products": "उत्पाद",
+  "Add Item": "आइटम जोड़ें",
+  "Add Customer": "ग्राहक जोड़ें",
+  "Barcode (Scan or Enter)": "बारकोड (स्कैन या दर्ज करें)",
+  "Product Name": "उत्पाद का नाम",
+  "Cost Price": "खरीद मूल्य",
+  "Sell Price": "बिक्री मूल्य",
+  "Stock": "स्टॉक",
+  "PCS": "पीस",
+  "KG": "किलोग्राम",
+  "L": "लीटर",
+  "Customer Name": "ग्राहक का नाम",
+  "Phone": "फोन",
+  "Search customer...": "ग्राहक खोजें...",
+  "Expense Name": "खर्च का नाम",
+  "Amount": "राशि",
+  "Expense Date": "खर्च की तारीख",
+  "Expense Type": "खर्च का प्रकार",
+  "Daily": "दैनिक",
+  "Monthly": "मासिक",
+  "Yearly": "वार्षिक",
+  "Save Expense": "खर्च सेव करें",
+  "Gross Profit": "सकल लाभ",
+  "Expense": "खर्च",
+  "Net Profit": "शुद्ध लाभ",
+  "Date": "तारीख",
+  "Description": "विवरण",
+  "Type": "प्रकार",
+  "Profit / Loss": "लाभ / हानि",
+  "Search invoice (name, date, amount...)": "इनवॉइस खोजें (नाम, तारीख, राशि...)",
+  "Message ShopHelp Pro AI...": "ShopHelp Pro AI को संदेश भेजें...",
+  "Clear Chat": "चैट साफ करें",
+  "Messages": "संदेश",
+  "Input": "इनपुट",
+  "Our Partner": "हमारे पार्टनर",
+  "Hi, I am": "नमस्ते, मैं हूँ",
+  "the founder of ShopHelp Pro.": "ShopHelp Pro का संस्थापक हूँ।",
+  "I started building this website to help all shops manage their business more easily using technology.": "मैंने यह वेबसाइट सभी दुकानों को तकनीक की मदद से अपना व्यवसाय आसानी से प्रबंधित करने में मदद करने के लिए बनाना शुरू किया।",
+  "Later,": "बाद में,",
+  "joined the project and contributed equally.": "इस प्रोजेक्ट में शामिल हुए और बराबर योगदान दिया।",
+  "Powered by ShopHelp Pro": "ShopHelp Pro द्वारा संचालित",
+  "Thank you for shopping": "खरीदारी के लिए धन्यवाद",
+  "Visit Again": "फिर आइए",
+};
+
+let shophelpLanguage = localStorage.getItem("shophelp_language") || "en";
+
+function shopHelpText(value) {
+  const key = String(value || "").trim();
+  return shophelpLanguage === "hi"
+    ? (SHOPHELP_TRANSLATIONS[key] || key)
+    : key;
+}
+
+function translateShopHelpUI() {
+  /*
+    SAFE MODE:
+    Only elements explicitly marked data-i18n are translated.
+    Firestore data, products, customers, bills, prices and numbers
+    are never scanned or modified.
+  */
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.dataset.i18n;
+    if (el.dataset.i18nType === "placeholder") {
+      el.placeholder = shopHelpText(key);
+      return;
+    }
+
+    // Preserve icons and any numeric/data child nodes.
+    const icon = el.querySelector("i");
+    if (icon) {
+      while (el.lastChild) el.removeChild(el.lastChild);
+      el.appendChild(icon);
+      el.appendChild(document.createTextNode(" " + shopHelpText(key)));
+    } else {
+      el.textContent = shopHelpText(key);
+    }
+  });
+
+  document.querySelectorAll("option[data-i18n]").forEach(option => {
+    option.textContent = shopHelpText(option.dataset.i18n);
+  });
+
+  const language = document.getElementById("shophelpLanguage");
+  if (language) language.value = shophelpLanguage;
+}
+
+function setShopHelpLanguage(language) {
+  shophelpLanguage = language === "hi" ? "hi" : "en";
+  localStorage.setItem("shophelp_language", shophelpLanguage);
+  translateShopHelpUI();
+
+  const menu = document.getElementById("shophelpLanguageMenu");
+  if (menu) menu.style.display = "none";
+}
+
+function toggleShopHelpLanguageMenu() {
+  const menu = document.getElementById("shophelpLanguageMenu");
+  if (!menu) return;
+
+  menu.style.display =
+    menu.style.display === "none" || menu.style.display === ""
+      ? "block"
+      : "none";
+
+  const selector = document.getElementById("shophelpLanguage");
+  if (selector) selector.value = shophelpLanguage;
+}
+
+window.setShopHelpLanguage = setShopHelpLanguage;
+window.toggleShopHelpLanguageMenu = toggleShopHelpLanguageMenu;
+
+document.addEventListener("DOMContentLoaded", translateShopHelpUI);
+</script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -594,11 +775,11 @@ if(products.length===0){
 }
 
 let h=`<tr>
-<th>Item</th>
+<th data-i18n="Item">Item</th>
 <th>CP</th>
 <th>SP</th>
 <th>Stock</th>
-<th>Action</th>
+<th data-i18n="Action">Action</th>
 </tr>`;
 
 products.forEach((p,i)=>{
@@ -850,8 +1031,8 @@ th{
 
 <table>
 <tr>
-  <th>Item</th>
-  <th>Qty</th>
+  <th data-i18n="Item">Item</th>
+  <th data-i18n="Qty">Qty</th>
   <th>₹</th>
 </tr>
 ${rows}
@@ -939,7 +1120,7 @@ window.viewHistory = function(i){
   w.document.write(html);
 }
 function renderCustomers(){
-let h=`<tr><th>Name</th><th>Phone</th><th>Debt</th><th>Action</th></tr>`;
+let h=`<tr><th>Name</th><th>Phone</th><th>Debt</th><th data-i18n="Action">Action</th></tr>`;
 
 customers.forEach((c,i)=>{
 h+=`<tr>
@@ -1735,8 +1916,8 @@ window.viewSale = function(index){
 
   <table>
   <tr>
-    <th>Item</th>
-    <th>Qty</th>
+    <th data-i18n="Item">Item</th>
+    <th data-i18n="Qty">Qty</th>
     <th>₹</th>
   </tr>
   ${rows}
@@ -1905,7 +2086,7 @@ font-weight:600;
   <!-- Input -->
   <div id="chatInputArea">
     <button onclick="startVoice()">🎤</button>
-    <input id="chatInput" placeholder="Message ShopHelp Pro AI...">
+    <input id="chatInput" data-i18n="Message ShopHelp Pro AI..." data-i18n-type="placeholder" placeholder="Message ShopHelp Pro AI...">
     <button onclick="document.getElementById('imageInput').click()">📷</button>
     <button onclick="sendMsg()">➤</button>
     <button onclick="clearChat()">🗑 Clear Chat</button>

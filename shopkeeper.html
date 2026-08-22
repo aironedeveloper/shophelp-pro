@@ -168,6 +168,7 @@ margin-top:8px;
 margin-bottom:15px;
 }
 
+
 </style>
 </head>
 <body>
@@ -181,31 +182,31 @@ margin-bottom:15px;
 <div class="menu">
 
 <button onclick="showPage('dashboard')">
-🏠 Dashboard
+🏠 <span data-i18n="dashboard">Dashboard</span>
 </button>
 
 <button onclick="showPage('products')">
-📦 Products
+📦 <span data-i18n="products">Products</span>
 </button>
 
 <button onclick="showPage('orders')">
-🛍 Orders
+🛍 <span data-i18n="orders">Orders</span>
 </button>
 
 <button onclick="showPage('customers')">
-👥 Customers
+👥 <span data-i18n="customers">Customers</span>
 </button>
 
 <button onclick="showPage('analytics')">
-📈 Analytics
+📈 <span data-i18n="analytics">Analytics</span>
 </button>
 
 <button onclick="showPage('settings')">
-⚙ Settings
+⚙ <span data-i18n="settings">Settings</span>
 </button>
 
 <button onclick="logoutUser()">
-🚪 Logout
+🚪 <span data-i18n="logout">Logout</span>
 </button>
 
 </div>
@@ -220,9 +221,7 @@ margin-bottom:15px;
 Loading...
 </div>
 
-<div id="approvalBadge" class="status pending">
-Pending
-</div>
+<div id="approvalBadge" class="status pending" data-i18n="pending">Pending</div>
 
 </div>
 
@@ -231,22 +230,22 @@ Pending
 <div class="cards">
 
 <div class="card">
-<h4>Total Products</h4>
+<h4 data-i18n="totalProducts">Total Products</h4>
 <h2 id="totalProducts">0</h2>
 </div>
 
 <div class="card">
-<h4>Total Customers</h4>
+<h4 data-i18n="totalCustomers">Total Customers</h4>
 <h2 id="totalCustomers">0</h2>
 </div>
 
 <div class="card">
-<h4>Total Sales</h4>
+<h4 data-i18n="totalSales">Total Sales</h4>
 <h2 id="totalSales">0</h2>
 </div>
 
 <div class="card">
-<h4>Revenue</h4>
+<h4 data-i18n="revenue">Revenue</h4>
 <h2 id="totalRevenue">₹0</h2>
 </div>
 
@@ -254,11 +253,9 @@ Pending
 
 <div class="page">
 
-<h2>Welcome to OnShop</h2>
+<h2 data-i18n="welcome">Welcome to OnShop</h2>
 <br>
-<p>
-Manage products, orders and customers from one dashboard.
-</p>
+<p data-i18n="manage">Manage products, orders and customers from one dashboard.</p>
 
 </div>
 
@@ -273,6 +270,59 @@ Manage products, orders and customers from one dashboard.
 <div id="analyticsPage" class="page hidden"></div>
 
 <div id="settingsPage" class="page hidden"></div>
+<script>
+/* SHOPKEEPER LANGUAGE SYSTEM - UI ONLY, NO FIRESTORE DATA TRANSLATION */
+const SHOPKEEPER_TEXT = {
+  en: {
+    language:"Language", dashboard:"Dashboard", products:"Products", orders:"Orders",
+    customers:"Customers", analytics:"Analytics", settings:"Settings", logout:"Logout",
+    pending:"Pending", approved:"Approved", revenue:"Revenue", totalProducts:"Total Products",
+    totalCustomers:"Total Customers", totalSales:"Total Sales", welcome:"Welcome to OnShop",
+    manage:"Manage products, orders and customers from one dashboard.", name:"Name", price:"Price",
+    stock:"Stock", onshop:"OnShop", action:"Action", live:"Live", off:"Off", enable:"Enable",
+    disable:"Disable", debt:"Debt", totalRevenue:"Total Revenue", storeSettings:"Store Settings",
+    shopName:"Shop Name", ownerName:"Owner Name", phone:"Phone", address:"Address",
+    saveSettings:"Save Settings", noOrders:"No orders yet",
+    ordersMessage:"Orders from OnShop customers will appear here.", settingsSaved:"Settings Saved",
+    userNotFound:"User not found", accessDenied:"Access denied"
+  },
+  hi: {
+    language:"भाषा", dashboard:"डैशबोर्ड", products:"उत्पाद", orders:"ऑर्डर",
+    customers:"ग्राहक", analytics:"विश्लेषण", settings:"सेटिंग्स", logout:"लॉगआउट",
+    pending:"लंबित", approved:"स्वीकृत", revenue:"राजस्व", totalProducts:"कुल उत्पाद",
+    totalCustomers:"कुल ग्राहक", totalSales:"कुल बिक्री", welcome:"OnShop में आपका स्वागत है",
+    manage:"एक ही डैशबोर्ड से उत्पाद, ऑर्डर और ग्राहकों को प्रबंधित करें।", name:"नाम", price:"कीमत",
+    stock:"स्टॉक", onshop:"OnShop", action:"कार्य", live:"लाइव", off:"बंद", enable:"सक्षम करें",
+    disable:"अक्षम करें", debt:"बकाया", totalRevenue:"कुल राजस्व", storeSettings:"दुकान की सेटिंग्स",
+    shopName:"दुकान का नाम", ownerName:"मालिक का नाम", phone:"फोन", address:"पता",
+    saveSettings:"सेटिंग्स सेव करें", noOrders:"अभी कोई ऑर्डर नहीं है",
+    ordersMessage:"OnShop ग्राहकों के ऑर्डर यहां दिखाई देंगे।", settingsSaved:"सेटिंग्स सेव हो गईं",
+    userNotFound:"यूज़र नहीं मिला", accessDenied:"पहुंच अस्वीकृत"
+  }
+};
+let shopkeeperLanguage = localStorage.getItem("shophelp_language") || "en";
+function st(key){ return (SHOPKEEPER_TEXT[shopkeeperLanguage] && SHOPKEEPER_TEXT[shopkeeperLanguage][key]) || SHOPKEEPER_TEXT.en[key] || key; }
+function applyShopkeeperLanguage(){
+  document.querySelectorAll("[data-i18n]").forEach(el=>{ el.textContent=st(el.dataset.i18n); });
+  const sel=document.getElementById("shopkeeperLanguage"); if(sel) sel.value=shopkeeperLanguage;
+}
+function setShopkeeperLanguage(lang){
+  shopkeeperLanguage = lang === "hi" ? "hi" : "en";
+  localStorage.setItem("shophelp_language", shopkeeperLanguage);
+  applyShopkeeperLanguage();
+  // Re-render only this page's static UI. Firestore data values are inserted unchanged.
+  if (typeof window.updateDashboard === "function") window.updateDashboard();
+  if (typeof window.renderProducts === "function") window.renderProducts();
+  if (typeof window.renderCustomers === "function") window.renderCustomers();
+  if (typeof window.renderAnalytics === "function") window.renderAnalytics();
+  if (typeof window.renderOrders === "function") window.renderOrders();
+  if (typeof window.renderSettings === "function") window.renderSettings();
+
+  applyShopkeeperLanguage();
+}
+window.setShopkeeperLanguage=setShopkeeperLanguage;
+document.addEventListener("DOMContentLoaded", applyShopkeeperLanguage);
+</script>
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -339,7 +389,7 @@ await getDoc(doc(db,"users",uid));
 
 if(!userSnap.exists()){
 
-alert("User not found");
+alert(st("userNotFound"));
 return;
 
 }
@@ -348,7 +398,7 @@ userData = userSnap.data();
 
 if(userData.role !== "shopkeeper"){
 
-alert("Access denied");
+alert(st("accessDenied"));
 location.href="index.html";
 return;
 
@@ -398,6 +448,7 @@ renderCustomers();
 renderAnalytics();
 renderOrders();
 renderSettings();
+applyShopkeeperLanguage();
 
 }
 
@@ -443,66 +494,31 @@ document.getElementById("totalRevenue")
 "₹"+revenue;
 
 }
-function renderProducts(){
-
+window.renderProducts = function renderProducts(){
 let html = `
-
-<h2>Products</h2>
-
+<h2>${st("products")}</h2>
 <br>
-
 <table>
-
 <tr>
-<th>Name</th>
-<th>Price</th>
-<th>Stock</th>
-<th>OnShop</th>
-<th>Action</th>
+<th>${st("name")}</th>
+<th>${st("price")}</th>
+<th>${st("stock")}</th>
+<th>${st("onshop")}</th>
+<th>${st("action")}</th>
 </tr>
-
 `;
-
 products.forEach((p,index)=>{
-
 html += `
-
 <tr>
-
 <td>${p.name || "-"}</td>
-
 <td>₹${p.sp || 0}</td>
-
 <td>${p.qty || 0}</td>
-
-<td>
-${p.onshopEnabled ? "✅ Live" : "❌ Off"}
-</td>
-
-<td>
-
-<button
-class="btn primary"
-onclick="toggleProduct(${index})">
-
-${p.onshopEnabled ? "Disable" : "Enable"}
-
-</button>
-
-</td>
-
-</tr>
-
-`;
-
+<td>${p.onshopEnabled ? "✅ " + st("live") : "❌ " + st("off")}</td>
+<td><button class="btn primary" onclick="toggleProduct(${index})">${p.onshopEnabled ? st("disable") : st("enable")}</button></td>
+</tr>`;
 });
-
 html += `</table>`;
-
-document.getElementById(
-"productsPage"
-).innerHTML = html;
-
+document.getElementById("productsPage").innerHTML = html;
 }
 
 window.toggleProduct = async function(index){
@@ -523,170 +539,72 @@ renderProducts();
 
 };
 
-function renderCustomers(){
-
+window.renderCustomers = function renderCustomers(){
 let html = `
-
-<h2>Customers</h2>
-
+<h2>${st("customers")}</h2>
 <br>
-
 <table>
-
 <tr>
-<th>Name</th>
-<th>Phone</th>
-<th>Debt</th>
+<th>${st("name")}</th>
+<th>${st("phone")}</th>
+<th>${st("debt")}</th>
 </tr>
-
 `;
-
 customers.forEach(c=>{
-
 html += `
-
 <tr>
-
 <td>${c.name || "-"}</td>
-
 <td>${c.phone || "-"}</td>
-
 <td>₹${c.debt || 0}</td>
-
-</tr>
-
-`;
-
+</tr>`;
 });
-
 html += `</table>`;
-
-document.getElementById(
-"customersPage"
-).innerHTML = html;
-
+document.getElementById("customersPage").innerHTML = html;
 }
 
-function renderAnalytics(){
-
+window.renderAnalytics = function renderAnalytics(){
 let revenue = 0;
-
-sales.forEach(s=>{
-
-revenue += Number(
-s.total || 0
-);
-
-});
-
-document.getElementById(
-"analyticsPage"
-).innerHTML = `
-
-<h2>Analytics</h2>
-
+sales.forEach(sale=>{ revenue += Number(sale.total || 0); });
+document.getElementById("analyticsPage").innerHTML = `
+<h2>${st("analytics")}</h2>
 <br>
-
 <div class="cards">
-
-<div class="card">
-
-<h4>Total Revenue</h4>
-
-<h2>₹${revenue}</h2>
-
-</div>
-
-<div class="card">
-
-<h4>Total Sales</h4>
-
-<h2>${sales.length}</h2>
-
-</div>
-
-<div class="card">
-
-<h4>Products</h4>
-
-<h2>${products.length}</h2>
-
-</div>
-
-</div>
-
-`;
-
-}
-function renderOrders(){
-
-document.getElementById(
-"ordersPage"
-).innerHTML = `
-
-<h2>Orders</h2>
-
-<br>
-
-<div class="card">
-
-<h3>
-No orders yet
-</h3>
-
-<p>
-Orders from OnShop customers will appear here.
-</p>
-
-</div>
-
-`;
-
+<div class="card"><h4>${st("totalRevenue")}</h4><h2>₹${revenue}</h2></div>
+<div class="card"><h4>${st("totalSales")}</h4><h2>${sales.length}</h2></div>
+<div class="card"><h4>${st("products")}</h4><h2>${products.length}</h2></div>
+</div>`;
 }
 
-function renderSettings(){
-
-document.getElementById(
-"settingsPage"
-).innerHTML = `
-
-<h2>Store Settings</h2>
-
+window.renderOrders = function renderOrders(){
+document.getElementById("ordersPage").innerHTML = `
+<h2>${st("orders")}</h2>
 <br>
+<div class="card">
+<h3>${st("noOrders")}</h3>
+<p>${st("ordersMessage")}</p>
+</div>`;
+}
 
-<label>Shop Name</label>
-
-<input
-id="shopNameInput"
-value="${userData.shopName || ""}">
-
-<label>Owner Name</label>
-
-<input
-id="ownerNameInput"
-value="${userData.ownerName || ""}">
-
-<label>Phone</label>
-
-<input
-id="phoneInput"
-value="${userData.phone || ""}">
-
-<label>Address</label>
-
-<textarea
-id="addressInput">${userData.address || ""}</textarea>
-
-<button
-class="btn success"
-onclick="saveSettings()">
-
-Save Settings
-
-</button>
-
+window.renderSettings = function renderSettings(){
+document.getElementById("settingsPage").innerHTML = `
+<h2>${st("storeSettings")}</h2>
+<br>
+<label>${st("language")}</label>
+<select id="shopkeeperLanguage" onchange="setShopkeeperLanguage(this.value)" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin-top:8px;margin-bottom:15px;">
+<option value="en">English</option>
+<option value="hi">हिंदी</option>
+</select>
+<label>${st("shopName")}</label>
+<input id="shopNameInput" value="${userData.shopName || ""}">
+<label>${st("ownerName")}</label>
+<input id="ownerNameInput" value="${userData.ownerName || ""}">
+<label>${st("phone")}</label>
+<input id="phoneInput" value="${userData.phone || ""}">
+<label>${st("address")}</label>
+<textarea id="addressInput">${userData.address || ""}</textarea>
+<button class="btn success" onclick="saveSettings()">${st("saveSettings")}</button>
 `;
-
+const selector=document.getElementById("shopkeeperLanguage"); if(selector) selector.value=shopkeeperLanguage;
 }
 
 window.saveSettings = async function(){
@@ -718,7 +636,7 @@ document.getElementById(
 }
 );
 
-alert("Settings Saved");
+alert(st("settingsSaved"));
 
 };
 

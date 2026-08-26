@@ -139,6 +139,9 @@ About Us
 >
 <button onclick="startBarcodeScanner()"><span data-i18n="Scan Barcode">📷 Scan Barcode</span></button>
 <div id="reader" style="width:300px;"></div>
+  <button type="button" class="btn" onclick="startBillingVoice()">
+  🎤 Add by Voice
+</button>
 <table>
 <thead>
 <tr>
@@ -189,7 +192,9 @@ About Us
 <option data-i18n="KG">KG</option>
 <option data-i18n="L">L</option>
 </select>
-
+<button type="button" class="btn" onclick="startInventoryVoice()">
+  🎤 Fill by Voice
+</button>
 <button onclick="addItem()" class="btn-main" id="addBtn" data-i18n="Add Item">Add Item</button>
 <table id="invTable"></table>
 </div>
@@ -2042,6 +2047,129 @@ if(s.customer !== null && customers[s.customer]){
 
   alert("Invoice deleted ✅");
 };
+  // ===============================
+// SHOPHELP VOICE INPUT
+// ===============================
+
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+
+function createShopHelpVoice() {
+  if (!SpeechRecognition) {
+    alert("Voice input is not supported in this browser.");
+    return null;
+  }
+
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = "en-IN";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  return recognition;
+}
+  async function startBillingVoice() {
+
+  const recognition = createShopHelpVoice();
+  if (!recognition) return;
+
+  recognition.onstart = () => {
+    console.log("🎤 Billing voice listening...");
+  };
+
+  recognition.onerror = (event) => {
+    console.error("Billing voice error:", event.error);
+    alert("Could not hear you. Please try again.");
+  };
+
+  recognition.onresult = async (event) => {
+
+    const spokenText =
+      event.results[0][0].transcript.trim();
+
+    console.log("Voice command:", spokenText);
+
+    await processBillingVoice(spokenText);
+  };
+
+  recognition.start();
+}
+  async function processBillingVoice(text) {
+
+  text = text.toLowerCase().trim();
+
+  // Find quantity
+  const quantityMatch = text.match(/\b(\d+)\b/);
+  const quantity = quantityMatch
+    ? parseInt(quantityMatch[1])
+    : 1;
+
+  // Remove common command words
+  let productSearch = text
+    .replace(/\b(add|put|give|bill|billing|please|item|items)\b/g, "")
+    .replace(/\b\d+\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!productSearch) {
+    alert("Please say the product name.");
+    return;
+  }
+
+  console.log("Searching inventory for:", productSearch);
+
+  // Search existing inventory
+  const product = findProductForVoice(productSearch);
+
+  if (!product) {
+    alert(
+      `I couldn't find "${productSearch}" in your inventory.\n\n` +
+      "Add this product to inventory first."
+    );
+    return;
+  }
+
+  // Add product to existing billing system
+  addVoiceProductToBill(product, quantity);
+}
+  function findProductForVoice(searchText) {
+
+  if (!Array.isArray(products)) {
+    return null;
+  }
+
+  const search = searchText.toLowerCase();
+
+  // Exact/contains match
+  let product = products.find(p => {
+
+    const name = String(
+      p.name ||
+      p.productName ||
+      ""
+    ).toLowerCase();
+
+    return name === search;
+  });
+
+  if (product) return product;
+
+  // Partial match
+  product = products.find(p => {
+
+    const name = String(
+      p.name ||
+      p.productName ||
+      ""
+    ).toLowerCase();
+
+    return name.includes(search) ||
+           search.includes(name);
+  });
+
+  return product || null;
+}
 window.editSale = function(index){
 
   if(!confirm("Edit this invoice? It will be moved back to billing.")) return;

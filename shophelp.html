@@ -617,7 +617,21 @@ try {
 const provider = new GoogleAuthProvider();
 const result = await signInWithPopup(auth, provider);
 const user = result.user;
-alert("Google login successful: " + user.email);
+loginPage.classList.add("hidden");
+
+appDiv.classList.remove("hidden");
+
+await loadData();
+
+loadChatUI();
+
+checkLowStock();
+
+renderAll();
+
+renderFinances();
+
+renderChart();
 } catch(error) {
 console.error("Google login error:", error);
 alert("Google login failed: " + error.message);

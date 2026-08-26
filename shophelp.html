@@ -2051,12 +2051,18 @@ if(s.customer !== null && customers[s.customer]){
 // SHOPHELP VOICE INPUT
 // ===============================
 
+// ===============================
+// SHOPHELP VOICE INPUT
+// BILLING + INVENTORY
+// ===============================
+
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
 function createShopHelpVoice() {
+
   if (!SpeechRecognition) {
-    alert("Voice input is not supported in this browser.");
+    alert("Voice input is not supported in this browser. Please use Google Chrome.");
     return null;
   }
 
@@ -2069,18 +2075,33 @@ function createShopHelpVoice() {
 
   return recognition;
 }
-  async function startBillingVoice() {
+
+
+// ==========================================
+// BILLING VOICE
+// ==========================================
+
+window.startBillingVoice = function () {
 
   const recognition = createShopHelpVoice();
+
   if (!recognition) return;
 
+  showToast("🎤 Listening... Say product name and quantity");
+
   recognition.onstart = () => {
-    console.log("🎤 Billing voice listening...");
+    console.log("Billing voice started");
   };
 
   recognition.onerror = (event) => {
+
     console.error("Billing voice error:", event.error);
-    alert("Could not hear you. Please try again.");
+
+    if (event.error === "not-allowed") {
+      alert("Microphone permission is blocked. Please allow microphone access.");
+    } else {
+      alert("Could not hear you. Please try again.");
+    }
   };
 
   recognition.onresult = async (event) => {
@@ -2088,26 +2109,31 @@ function createShopHelpVoice() {
     const spokenText =
       event.results[0][0].transcript.trim();
 
-    console.log("Voice command:", spokenText);
+    console.log("Billing voice:", spokenText);
 
     await processBillingVoice(spokenText);
   };
 
   recognition.start();
-}
-  async function processBillingVoice(text) {
+};
+
+
+async function processBillingVoice(text) {
 
   text = text.toLowerCase().trim();
 
+  console.log("Processing billing voice:", text);
+
   // Find quantity
   const quantityMatch = text.match(/\b(\d+)\b/);
+
   const quantity = quantityMatch
     ? parseInt(quantityMatch[1])
     : 1;
 
   // Remove common command words
   let productSearch = text
-    .replace(/\b(add|put|give|bill|billing|please|item|items)\b/g, "")
+    .replace(/\b(add|put|give|bill|billing|please|item|items|quantity|qty)\b/g, "")
     .replace(/\b\d+\b/g, "")
     .replace(/\s+/g, " ")
     .trim();
@@ -2117,38 +2143,38 @@ function createShopHelpVoice() {
     return;
   }
 
-  console.log("Searching inventory for:", productSearch);
+  console.log("Searching product:", productSearch);
 
-  // Search existing inventory
   const product = findProductForVoice(productSearch);
 
   if (!product) {
+
     alert(
-      `I couldn't find "${productSearch}" in your inventory.\n\n` +
-      "Add this product to inventory first."
+      `Product "${productSearch}" was not found in Inventory.\n\n` +
+      `Please add it to Inventory first.`
     );
+
     return;
   }
 
-  // Add product to existing billing system
   addVoiceProductToBill(product, quantity);
 }
-  function findProductForVoice(searchText) {
+
+
+function findProductForVoice(searchText) {
 
   if (!Array.isArray(products)) {
     return null;
   }
 
-  const search = searchText.toLowerCase();
+  const search = searchText.toLowerCase().trim();
 
-  // Exact/contains match
+  // Exact match
   let product = products.find(p => {
 
-    const name = String(
-      p.name ||
-      p.productName ||
-      ""
-    ).toLowerCase();
+    const name = String(p.name || "")
+      .toLowerCase()
+      .trim();
 
     return name === search;
   });
@@ -2158,17 +2184,328 @@ function createShopHelpVoice() {
   // Partial match
   product = products.find(p => {
 
-    const name = String(
-      p.name ||
-      p.productName ||
-      ""
-    ).toLowerCase();
+    const name = String(p.name || "")
+      .toLowerCase()
+      .trim();
 
     return name.includes(search) ||
            search.includes(name);
   });
 
   return product || null;
+}
+
+
+function addVoiceProductToBill(product, quantity) {
+
+  if (!product) return;
+
+  if (product.qty <= 0) {
+
+    alert(`${product.name} is out of stock.`);
+
+    return;
+  }
+
+  // Don't allow adding more than available stock
+  if (quantity > product.qty) {
+
+    alert(
+      `${product.name} has only ${product.qty} ${product.unit || "PCS"} in stock.`
+    );
+
+    quantity = product.qty;
+  }
+
+  let existing = bill.find(
+    item => item.name === product.name
+  );
+
+  if (existing) {
+
+    existing.count += quantity;
+
+  } else {
+
+    bill.push({
+      ...product,
+      count: quantity
+    });
+  }
+
+  renderBill();
+
+  showToast(
+    `✔ Added ${quantity} × ${product.name}`
+  );
+
+  console.log(
+    `Added ${quantity} x ${product.name} to bill`
+  );
+}
+
+
+// ==========================================
+// INVENTORY VOICE
+// ==========================================
+
+window.startInventoryVoice = function () {
+
+  const recognition = createShopHelpVoice();
+
+  if (!recognition) return;
+
+  showToast(
+    "🎤 Listening... Say product, cost price, sell price and stock"
+  );
+
+  recognition.onstart = () => {
+    console.log("Inventory voice started");
+  };
+
+  recognition.onerror = (event) => {
+
+    console.error("Inventory voice error:", event.error);
+
+    if (event.error === "not-allowed") {
+      alert("Microphone permission is blocked. Please allow microphone access.");
+    } else {
+      alert("Could not hear you. Please try again.");
+    }
+  };
+
+  recognition.onresult = (event) => {
+
+    const spokenText =
+      event.results[0][0].transcript.trim();
+
+    console.log(
+      "Inventory voice:",
+      spokenText
+    );
+
+    processInventoryVoice(spokenText);
+  };
+
+  recognition.start();
+};
+
+async function processInventoryVoice(text) {
+
+  text = text.toLowerCase().trim();
+
+  console.log(
+    "Processing inventory voice:",
+    text
+  );
+
+  /*
+    Example:
+
+    "Add Maggi cost 10 sell 15 stock 20 barcode 123456"
+
+    OR
+
+    "Maggi cost 10 selling 15 stock 20 barcode 123456"
+  */
+
+  // -----------------------------
+  // COST PRICE
+  // -----------------------------
+
+  const costMatch = text.match(
+    /(?:cost|cp|purchase|buying)\s*(?:price)?\s*(\d+(?:\.\d+)?)/i
+  );
+
+  // -----------------------------
+  // SELL PRICE
+  // -----------------------------
+
+  const sellMatch = text.match(
+    /(?:sell|selling|sp|sale)\s*(?:price)?\s*(\d+(?:\.\d+)?)/i
+  );
+
+  // -----------------------------
+  // STOCK / QUANTITY
+  // -----------------------------
+
+  const stockMatch = text.match(
+    /(?:stock|quantity|qty)\s*(\d+(?:\.\d+)?)/i
+  );
+
+  // -----------------------------
+  // BARCODE
+  // -----------------------------
+
+  const barcodeMatch = text.match(
+    /(?:barcode|bar code)\s*([0-9]+)/i
+  );
+
+  const cp = costMatch
+    ? Number(costMatch[1])
+    : 0;
+
+  const sp = sellMatch
+    ? Number(sellMatch[1])
+    : 0;
+
+  const qty = stockMatch
+    ? Number(stockMatch[1])
+    : 0;
+
+  const barcode = barcodeMatch
+    ? barcodeMatch[1]
+    : "";
+
+  // -----------------------------
+  // PRODUCT NAME
+  // -----------------------------
+
+  let productName = text;
+
+  productName = productName
+    .replace(
+      /(?:add|create|new|product|item|please|please add)/gi,
+      ""
+    )
+
+    .replace(
+      /(?:cost|cp|purchase|buying)\s*(?:price)?\s*\d+(?:\.\d+)?/gi,
+      ""
+    )
+
+    .replace(
+      /(?:sell|selling|sp|sale)\s*(?:price)?\s*\d+(?:\.\d+)?/gi,
+      ""
+    )
+
+    .replace(
+      /(?:stock|quantity|qty)\s*\d+(?:\.\d+)?/gi,
+      ""
+    )
+
+    .replace(
+      /(?:barcode|bar code)\s*[0-9]+/gi,
+      ""
+    )
+
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!productName) {
+
+    alert(
+      "Could not understand the product name."
+    );
+
+    return;
+  }
+
+  // -----------------------------
+  // SHOW WHAT WAS UNDERSTOOD
+  // -----------------------------
+
+  console.log({
+    productName,
+    cp,
+    sp,
+    qty,
+    barcode
+  });
+
+  // -----------------------------
+  // VALIDATION
+  // -----------------------------
+
+  if (!cp || !sp || !qty || !barcode) {
+
+    alert(
+      `I heard:\n\n` +
+      `Product: ${productName}\n` +
+      `Cost Price: ₹${cp}\n` +
+      `Sell Price: ₹${sp}\n` +
+      `Stock: ${qty}\n` +
+      `Barcode: ${barcode || "missing"}\n\n` +
+      `Please say all details like:\n` +
+      `"Add Maggi cost 10 sell 15 stock 20 barcode 123456"`
+    );
+
+    return;
+  }
+
+  // -----------------------------
+  // DUPLICATE BARCODE CHECK
+  // -----------------------------
+
+  const exists = products.find(
+    p => String(p.barcode) === String(barcode)
+  );
+
+  if (exists) {
+
+    alert(
+      `Barcode already exists for "${exists.name}".`
+    );
+
+    return;
+  }
+
+  // -----------------------------
+  // ADD PRODUCT
+  // -----------------------------
+
+  products.push({
+
+    name: productName,
+
+    cp: cp,
+
+    sp: sp,
+
+    qty: qty,
+
+    unit: "PCS",
+
+    barcode: barcode,
+
+    category: "",
+    brand: "",
+    description: "",
+    image: "",
+
+    approved: false,
+    onshopEnabled: false,
+
+    createdAt: Date.now()
+  });
+
+  // -----------------------------
+  // SAVE
+  // -----------------------------
+
+  await saveData();
+
+  // -----------------------------
+  // REFRESH INVENTORY
+  // -----------------------------
+
+  renderInventory();
+
+  checkLowStock();
+
+  // -----------------------------
+  // CLEAR INPUTS
+  // -----------------------------
+
+  document.getElementById("pName").value = "";
+  document.getElementById("pCP").value = "";
+  document.getElementById("pSP").value = "";
+  document.getElementById("pQty").value = "";
+  document.getElementById("pBarcode").value = "";
+
+  showToast(
+    `✔ ${productName} added to Inventory`
+  );
 }
 window.editSale = function(index){
 

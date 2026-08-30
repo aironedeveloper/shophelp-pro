@@ -1355,59 +1355,53 @@ function renderChart(){
   });
 }
 // ===== AI CONFIG =====
+// ===== AI CONFIG =====
 async function askAI(userMessage){
 
-  let dataSummary = `
-Products: ${products.map(p=>`${p.name}(${p.qty})`).join(", ")}
-Sales: ${sales.slice(-3).map(s=>`₹${s.total}`).join(", ")}
-Customers: ${customers.map(c=>`${c.name}:${c.debt}`).join(", ")}
+  const shopData = `
+PRODUCTS:
+${JSON.stringify(products)}
+
+SALES:
+${JSON.stringify(sales)}
+
+CUSTOMERS:
+${JSON.stringify(customers)}
+
+EXPENSES:
+${JSON.stringify(expenses)}
+
+LOW STOCK:
+${products.filter(p => Number(p.qty) < 5).map(p => p.name).join(", ") || "None"}
 `;
 
-  try{
-  const res = await fetch(
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyAF0y0of0PrLGGykM6RvubNxpUhS_as9YQ",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-text: `You are an advanced AI business assistant.
+  try {
 
-Rules:
-- Understand full shop data deeply
-- Give smart insights, not just answers
-- Suggest profit improvement ideas
-- Detect low stock, high sales trends
-- Reply in Hinglish (short + clear)
-- Be helpful like a business advisor
-
-User: ${userMessage}
-
-Shop Data:
-${dataSummary}`
-            }]
-          }]
-        })
-      }
-    );
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: userMessage,
+        shopData: shopData
+      })
+    });
 
     const data = await res.json();
 
-    console.log("FULL:", data);
-
-    // ✅ SAFE parsing
-    if(data.candidates && data.candidates.length > 0){
-      return data.candidates[0].content.parts[0].text;
-    } else if(data.error){
-      return "Error: " + data.error.message;
-    } else {
-      return "No response 🤔";
+    if (!res.ok) {
+      console.error("AI API error:", data);
+      return "Sorry, AI service mein problem aa gayi 😕";
     }
 
-  }catch(err){
-    console.error(err);
-    return "Network error 😢";
+    return data.answer || "No response 🤔";
+
+  } catch (err) {
+
+    console.error("AI request failed:", err);
+
+    return "AI se connect nahi ho pa raha 😕";
   }
 }
 // toggle
@@ -1519,7 +1513,7 @@ window.addEventListener("DOMContentLoaded", () => {
         chat.innerHTML += `<div id="loading">🤖 analyzing image...</div>`;
 
         const res = await fetch(
-          "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=AIzaSyAF0y0of0PrLGGykM6RvubNxpUhS_as9YQ",
+          "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=",
           {
             method:"POST",
             headers:{ "Content-Type":"application/json" },

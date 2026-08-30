@@ -1541,17 +1541,18 @@ window.addEventListener("DOMContentLoaded", () => {
 
           document.getElementById("loading")?.remove();
 
-          if(!res.ok){
-            console.error("Vision API error:", data);
+        if(!res.ok){
+  console.error("Vision API error:", data);
 
-            chat.innerHTML += `
-              <div class="msg bot">
-                Sorry, image AI mein problem aa gayi 😕
-              </div>
-            `;
+  chat.innerHTML += `
+    <div class="msg bot">
+      ❌ Image AI Error:<br>
+      ${data.error || "Unknown error"}
+    </div>
+  `;
 
-            return;
-          }
+  return;
+}
 
           const reply = data.answer || "No response";
 

@@ -10,19 +10,21 @@ export default async function handler(req, res) {
 
     if (!image) {
       return res.status(400).json({
-        error: "Image is required"
+        error: "Image is missing"
       });
     }
 
-    if (!mimeType || !mimeType.startsWith("image/")) {
+    const type = mimeType || "image/jpeg";
+
+    if (!type.startsWith("image/")) {
       return res.status(400).json({
-        error: "Only image files are supported"
+        error: "Invalid image type"
       });
     }
 
-    const imageUrl = `data:${mimeType};base64,${image}`;
+    const imageData = `data:${type};base64,${image}`;
 
-    const response = await fetch(
+    const groqResponse = await fetch(
       "https://api.groq.com/openai/v1/chat/completions",
       {
         method: "POST",
@@ -38,46 +40,55 @@ export default async function handler(req, res) {
               content: [
                 {
                   type: "text",
-                  text: prompt || "Explain this image in simple Hinglish."
+                  text:
+                    prompt ||
+                    "Explain this image in simple Hinglish. Identify important details clearly."
                 },
                 {
                   type: "image_url",
                   image_url: {
-                    url: imageUrl
+                    url: imageData
                   }
                 }
               ]
             }
           ],
-          temperature: 0.7,
+          temperature: 0.5,
           max_completion_tokens: 1000
         })
       }
     );
 
-    const data = await response.json();
+    const data = await groqResponse.json();
 
-    if (!response.ok) {
-      console.error("Groq Vision error:", data);
+    console.log("GROQ VISION RESPONSE:", data);
 
-      return res.status(500).json({
-        error: "Image AI service error"
+    if (!groqResponse.ok) {
+      return res.status(groqResponse.status).json({
+        error:
+          data?.error?.message ||
+          "Groq vision request failed"
       });
     }
 
     const answer =
-      data?.choices?.[0]?.message?.content ||
-      "Sorry, I could not understand this image.";
+      data?.choices?.[0]?.message?.content;
+
+    if (!answer) {
+      return res.status(500).json({
+        error: "Groq returned no answer"
+      });
+    }
 
     return res.status(200).json({
       answer
     });
 
   } catch (error) {
-    console.error("Vision server error:", error);
+    console.error("VISION ERROR:", error);
 
     return res.status(500).json({
-      error: "Internal server error"
+      error: error.message || "Vision server error"
     });
   }
 }

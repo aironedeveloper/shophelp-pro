@@ -1492,14 +1492,22 @@ window.addEventListener("DOMContentLoaded", () => {
   const imageInput = document.getElementById("imageInput");
 
   if(imageInput){
+
     imageInput.addEventListener("change", async function(){
 
       const file = this.files[0];
+
       if(!file) return;
+
+      if(!file.type.startsWith("image/")){
+        alert("Please select an image file.");
+        return;
+      }
 
       const reader = new FileReader();
 
       reader.onload = async function(){
+
         const base64 = reader.result.split(",")[1];
 
         let chat = document.getElementById("chatMessages");
@@ -1510,40 +1518,67 @@ window.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
 
-        chat.innerHTML += `<div id="loading">🤖 analyzing image...</div>`;
+        chat.innerHTML += `
+          <div id="loading">
+            🤖 analyzing image...
+          </div>
+        `;
 
-        const res = await fetch(
-          "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=",
-          {
-            method:"POST",
-            headers:{ "Content-Type":"application/json" },
+        try {
+
+          const res = await fetch("/api/vision", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
             body: JSON.stringify({
-              contents: [{
-                parts: [
-                  { text: "Explain this image in simple Hinglish" },
-                  {
-                    inline_data: {
-                      mime_type: file.type,
-                      data: base64
-                    }
-                  }
-                ]
-              }]
+              image: base64,
+              mimeType: file.type,
+              prompt: "Explain this image in simple Hinglish. If it contains a bill, receipt, product, invoice, or shop-related information, identify the important details clearly."
             })
+          });
+
+          const data = await res.json();
+
+          document.getElementById("loading")?.remove();
+
+          if(!res.ok){
+            console.error("Vision API error:", data);
+
+            chat.innerHTML += `
+              <div class="msg bot">
+                Sorry, image AI mein problem aa gayi 😕
+              </div>
+            `;
+
+            return;
           }
-        );
 
-        const data = await res.json();
+          const reply = data.answer || "No response";
 
-        document.getElementById("loading")?.remove();
+          chat.innerHTML += `
+            <div class="msg bot">${reply}</div>
+          `;
 
-        let reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
+        } catch(error) {
 
-        chat.innerHTML += `<div class="msg bot">${reply}</div>`;
+          console.error("Image AI error:", error);
+
+          document.getElementById("loading")?.remove();
+
+          chat.innerHTML += `
+            <div class="msg bot">
+              Image AI se connect nahi ho pa raha 😕
+            </div>
+          `;
+        }
+
       };
 
       reader.readAsDataURL(file);
+
     });
+
   }
 
 });

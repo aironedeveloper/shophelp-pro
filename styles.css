@@ -1860,10 +1860,6 @@ select:focus-visible{
 .menu::-webkit-scrollbar{
   display:none;
 }
-#shophelpLanguageMenu{
-  pointer-events:auto !important;
-  z-index:999999 !important;
-}
 
 .menu button{
   width:auto;
@@ -1878,7 +1874,11 @@ select:focus-visible{
   font-size:14px;
   white-space:nowrap;
 }
-
+.language-menu{
+  top:65px;
+  right:10px;
+  min-width:160px;
+}
 
   /* CARDS */
 
@@ -2162,4 +2162,26 @@ button,
     slide .35s ease;
 
 }
-```
+/* =========================
+   SHOPHELP LANGUAGE MENU
+   ========================= */
+
+.language-menu{
+  display:none;
+  position:fixed;
+  top:70px;
+  right:20px;
+  z-index:999999;
+
+  background:#fff;
+  padding:14px;
+
+  border-radius:12px;
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.18);
+
+  min-width:170px;
+
+  pointer-events:auto;
+}

@@ -1862,15 +1862,19 @@ select:focus-visible{
 }
 
 
-  .menu button{
+.menu button{
+  width:auto;
+  min-width:max-content;
+  min-height:42px;
 
-    width:100%;
+  flex:0 0 auto;
 
-    min-height:45px;
+  padding:9px 13px;
+  border-radius:12px;
 
-    border-radius:13px;
-
-  }
+  font-size:14px;
+  white-space:nowrap;
+}
 
 
   /* CARDS */

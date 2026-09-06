@@ -1851,12 +1851,15 @@ select:focus-visible{
   border-radius:16px;
 
   overflow-x:auto;
-  overflow-y:hidden;
+  overflow-y:visible;
 
   -webkit-overflow-scrolling:touch;
   scrollbar-width:none;
 }
-
+#shophelpLanguageMenu{
+  pointer-events:auto !important;
+  z-index:999999 !important;
+}
 .menu::-webkit-scrollbar{
   display:none;
 }

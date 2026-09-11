@@ -711,7 +711,65 @@ document.title = shopName;
   }
 
 }
+/* =========================================
+   SHOPHELP FRIENDLY LOGIN NAVIGATION
+   ========================================= */
 
+window.showShopHelpMainLogin = function () {
+
+  const emailScreen =
+    document.getElementById("shophelpEmailLogin");
+
+  const signupScreen =
+    document.getElementById("shophelpSignup");
+
+  if (emailScreen) {
+    emailScreen.classList.add("hidden");
+  }
+
+  if (signupScreen) {
+    signupScreen.classList.add("hidden");
+  }
+
+};
+
+
+window.showShopHelpEmailLogin = function () {
+
+  const emailScreen =
+    document.getElementById("shophelpEmailLogin");
+
+  const signupScreen =
+    document.getElementById("shophelpSignup");
+
+  if (emailScreen) {
+    emailScreen.classList.remove("hidden");
+  }
+
+  if (signupScreen) {
+    signupScreen.classList.add("hidden");
+  }
+
+};
+
+
+window.showShopHelpSignup = function () {
+
+  const emailScreen =
+    document.getElementById("shophelpEmailLogin");
+
+  const signupScreen =
+    document.getElementById("shophelpSignup");
+
+  if (emailScreen) {
+    emailScreen.classList.add("hidden");
+  }
+
+  if (signupScreen) {
+    signupScreen.classList.remove("hidden");
+  }
+
+};
 // --- AUTH ---
 window.signupUser = async function(){
   const email = emailEl.value;

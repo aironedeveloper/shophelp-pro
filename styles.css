@@ -2185,3 +2185,338 @@ button,
 
   pointer-events:auto;
 }
+/* =========================================
+   SHOPHELP — FRIENDLY AUTH SCREEN
+   ========================================= */
+
+.shophelp-auth {
+  width: 100%;
+  max-width: 430px;
+  margin: 35px auto 60px;
+  position: relative;
+}
+
+.shophelp-auth-card {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 32px 28px;
+  background: rgba(255,255,255,0.96);
+  border-radius: 24px;
+  border: 1px solid rgba(99,91,255,0.10);
+  box-shadow:
+    0 20px 50px rgba(15,23,42,0.12),
+    0 4px 15px rgba(99,91,255,0.08);
+  text-align: center;
+}
+
+.shophelp-auth-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 16px;
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 36px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(99,91,255,0.12),
+    rgba(139,92,246,0.10)
+  );
+}
+
+.shophelp-auth-title {
+  margin: 0;
+  font-size: 27px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.shophelp-auth-subtitle {
+  margin: 8px 0 25px;
+  color: #64748b;
+  font-size: 15px;
+}
+
+/* GOOGLE */
+
+.shophelp-google-btn {
+  width: 100%;
+  min-height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  border: 1px solid #dbe2ea;
+  border-radius: 14px;
+
+  background: #ffffff;
+  color: #0f172a;
+
+  cursor: pointer;
+
+  font-size: 15px;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.shophelp-google-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(15,23,42,0.10);
+  background: #fafafa;
+}
+
+.shophelp-google-btn strong {
+  display: block;
+  font-size: 15px;
+}
+
+.shophelp-google-btn small {
+  display: block;
+  margin-top: 2px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.google-icon {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  background: #fff;
+  color: #4285f4;
+}
+
+/* DIVIDER */
+
+.shophelp-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin: 22px 0;
+
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.shophelp-divider::before,
+.shophelp-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+.shophelp-divider span {
+  padding: 0 3px;
+}
+
+/* EMAIL BUTTON */
+
+.shophelp-email-btn {
+  width: 100%;
+  min-height: 56px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    135deg,
+    #635bff,
+    #8b5cf6
+  );
+
+  color: white;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 8px 20px rgba(99,91,255,0.22);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.shophelp-email-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 25px rgba(99,91,255,0.28);
+}
+
+/* INPUTS */
+
+.shophelp-auth-input {
+  width: 100%;
+  height: 52px;
+
+  box-sizing: border-box;
+
+  margin-bottom: 13px;
+
+  padding: 0 15px;
+
+  border: 1px solid #dbe2ea;
+  border-radius: 13px;
+
+  background: #ffffff;
+
+  color: #0f172a;
+
+  font-size: 15px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.shophelp-auth-input:focus {
+  border-color: #635bff;
+
+  box-shadow:
+    0 0 0 3px rgba(99,91,255,0.12);
+}
+
+.shophelp-auth-input::placeholder {
+  color: #94a3b8;
+}
+
+/* MAIN ACTION */
+
+.shophelp-primary-btn {
+  width: 100%;
+  min-height: 55px;
+
+  margin-top: 5px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    135deg,
+    #635bff,
+    #8b5cf6
+  );
+
+  color: white;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 8px 20px rgba(99,91,255,0.22);
+}
+
+/* BOTTOM LINK */
+
+.shophelp-auth-bottom {
+  margin: 22px 0 0;
+
+  color: #64748b;
+  font-size: 14px;
+}
+
+.shophelp-link-btn {
+  border: none;
+  background: none;
+
+  padding: 0;
+  margin-left: 4px;
+
+  color: #635bff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.shophelp-link-btn:hover {
+  text-decoration: underline;
+}
+
+/* BACK */
+
+.shophelp-back-btn {
+  display: block;
+
+  border: none;
+  background: none;
+
+  padding: 0;
+  margin-bottom: 20px;
+
+  color: #64748b;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.shophelp-back-btn:hover {
+  color: #635bff;
+}
+
+/* SCREEN */
+
+.shophelp-auth-screen {
+  display: block;
+}
+
+.shophelp-auth-screen.hidden {
+  display: none !important;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .shophelp-auth {
+    max-width: 100%;
+    margin: 20px auto 40px;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+
+  .shophelp-auth-card {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+
+  .shophelp-auth-title {
+    font-size: 24px;
+  }
+
+  .shophelp-auth-icon {
+    width: 64px;
+    height: 64px;
+    font-size: 32px;
+  }
+
+}

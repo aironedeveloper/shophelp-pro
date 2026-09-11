@@ -2790,6 +2790,80 @@ window.searchInvoices = function(){
 
   });
 };
+     /* =========================================
+   SHOPHELP FRIENDLY LOGIN NAVIGATION
+   ========================================= */
+
+window.showShopHelpMainLogin = function(){
+
+  document
+    .getElementById("shophelpEmailLogin")
+    .classList.add("hidden");
+
+  document
+    .getElementById("shophelpSignup")
+    .classList.add("hidden");
+
+};
+
+window.showShopHelpEmailLogin = function(){
+
+  document
+    .getElementById("shophelpEmailLogin")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("shophelpSignup")
+    .classList.add("hidden");
+
+};
+
+window.showShopHelpSignup = function(){
+
+  document
+    .getElementById("shophelpSignup")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("shophelpEmailLogin")
+    .classList.add("hidden");
+
+};
+     window.shopHelpCreateAccount = async function(){
+
+  const signupEmail =
+    document.getElementById("signupEmail").value.trim();
+
+  const signupPassword =
+    document.getElementById("signupPassword").value;
+
+  const signupShopName =
+    document.getElementById("shopNameInput").value.trim();
+
+
+  if(!signupEmail || !signupPassword || !signupShopName){
+
+    showToast("Please fill all fields");
+
+    return;
+  }
+
+
+  /*
+     Put the signup values into the
+     existing fields used by signupUser()
+  */
+
+  emailEl.value = signupEmail;
+  passwordEl.value = signupPassword;
+
+  document.getElementById("shopNameInput").value =
+    signupShopName;
+
+
+  await signupUser();
+
+};
 </script>
 <div id="toast" style="
 position:fixed;

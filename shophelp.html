@@ -46,16 +46,199 @@ ShopHelp Pro
 
 </div>
 
-<div id="loginPage" class="card" style="max-width:400px;text-align:center;">
-<h2 data-i18n="Business Login">Business Login</h2>
-<input id="shopNameInput" data-i18n="Shop Name" data-i18n-type="placeholder" placeholder="Shop Name">
-<input id="email" data-i18n="Email" data-i18n-type="placeholder" placeholder="Email">
-<input id="password" data-i18n="Password" data-i18n-type="placeholder" type="password" placeholder="Password">
-<div style="margin:15px 0;"></div>
+<!-- =========================
+     SHOPHELP FRIENDLY LOGIN
+     ========================= -->
 
-  <button onclick="signupUser()" class="btn-main" data-i18n="Signup">Signup</button>
-  <button onclick="loginUser()" class="btn-main" data-i18n="Login">Login</button>
-  <button onclick="googleLogin()" class="btn-main">Continue with Google</button>
+<div id="loginPage" class="shophelp-auth">
+
+  <div class="shophelp-auth-card">
+
+    <div class="shophelp-auth-icon">
+      🏪
+    </div>
+
+    <h2 class="shophelp-auth-title">
+      Welcome to ShopHelp 👋
+    </h2>
+
+    <p class="shophelp-auth-subtitle">
+      Manage your shop easily
+    </p>
+
+    <!-- GOOGLE -->
+    <button
+      type="button"
+      onclick="googleLogin()"
+      class="shophelp-google-btn"
+    >
+      <span class="google-icon">G</span>
+      <span>
+        <strong>Continue with Google</strong>
+        <small>Fast & easy</small>
+      </span>
+    </button>
+
+    <div class="shophelp-divider">
+      <span>OR</span>
+    </div>
+
+    <!-- EMAIL -->
+    <button
+      type="button"
+      onclick="showShopHelpEmailLogin()"
+      class="shophelp-email-btn"
+    >
+      ✉️ Continue with Email
+    </button>
+
+    <p class="shophelp-auth-bottom">
+      New to ShopHelp?
+      <button
+        type="button"
+        onclick="showShopHelpSignup()"
+        class="shophelp-link-btn"
+      >
+        Create your shop
+      </button>
+    </p>
+
+  </div>
+
+
+  <!-- =========================
+       EMAIL LOGIN
+       ========================= -->
+
+  <div
+    id="shophelpEmailLogin"
+    class="shophelp-auth-card shophelp-auth-screen hidden"
+  >
+
+    <button
+      type="button"
+      onclick="showShopHelpMainLogin()"
+      class="shophelp-back-btn"
+    >
+      ← Back
+    </button>
+
+    <h2 class="shophelp-auth-title">
+      Login to ShopHelp
+    </h2>
+
+    <p class="shophelp-auth-subtitle">
+      Enter your email and password
+    </p>
+
+    <input
+      id="email"
+      type="email"
+      autocomplete="email"
+      placeholder="Email"
+      class="shophelp-auth-input"
+    >
+
+    <input
+      id="password"
+      type="password"
+      autocomplete="current-password"
+      placeholder="Password"
+      class="shophelp-auth-input"
+    >
+
+    <button
+      type="button"
+      onclick="loginUser()"
+      class="shophelp-primary-btn"
+    >
+      Continue →
+    </button>
+
+    <p class="shophelp-auth-bottom">
+      New to ShopHelp?
+      <button
+        type="button"
+        onclick="showShopHelpSignup()"
+        class="shophelp-link-btn"
+      >
+        Create your shop
+      </button>
+    </p>
+
+  </div>
+
+
+  <!-- =========================
+       SIGNUP
+       ========================= -->
+
+  <div
+    id="shophelpSignup"
+    class="shophelp-auth-card shophelp-auth-screen hidden"
+  >
+
+    <button
+      type="button"
+      onclick="showShopHelpMainLogin()"
+      class="shophelp-back-btn"
+    >
+      ← Back
+    </button>
+
+    <h2 class="shophelp-auth-title">
+      Create your shop
+    </h2>
+
+    <p class="shophelp-auth-subtitle">
+      Start managing your business with ShopHelp
+    </p>
+
+    <input
+      id="shopNameInput"
+      type="text"
+      autocomplete="organization"
+      placeholder="Shop name"
+      class="shophelp-auth-input"
+    >
+
+    <input
+      id="signupEmail"
+      type="email"
+      autocomplete="email"
+      placeholder="Email"
+      class="shophelp-auth-input"
+    >
+
+    <input
+      id="signupPassword"
+      type="password"
+      autocomplete="new-password"
+      placeholder="Create password"
+      class="shophelp-auth-input"
+    >
+
+    <button
+      type="button"
+      onclick="shopHelpCreateAccount()"
+      class="shophelp-primary-btn"
+    >
+      Create My Shop →
+    </button>
+
+    <p class="shophelp-auth-bottom">
+      Already have an account?
+      <button
+        type="button"
+        onclick="showShopHelpEmailLogin()"
+        class="shophelp-link-btn"
+      >
+        Login
+      </button>
+    </p>
+
+  </div>
+
 </div>
 
 <div id="app" class="hidden">

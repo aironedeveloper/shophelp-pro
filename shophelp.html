@@ -46,36 +46,32 @@ ShopHelp Pro
 
 </div>
 
-<!-- =========================
-     SHOPHELP FRIENDLY LOGIN
-     ========================= -->
-
 <div id="loginPage" class="shophelp-auth">
 
-  <div class="shophelp-auth-card">
+  <!-- MAIN LOGIN -->
+  <div id="shophelpMainLogin" class="shophelp-auth-card">
 
-    <div class="shophelp-auth-icon">
-      🏪
-    </div>
+    <div class="shophelp-auth-icon">🏪</div>
 
     <h2 class="shophelp-auth-title">
-      Welcome to ShopHelp 👋
+      Welcome to ShopHelp Pro
     </h2>
 
     <p class="shophelp-auth-subtitle">
       Manage your shop easily
     </p>
 
-    <!-- GOOGLE -->
+    <!-- GOOGLE LOGIN -->
     <button
       type="button"
       onclick="googleLogin()"
       class="shophelp-google-btn"
     >
       <span class="google-icon">G</span>
-      <span>
+
+      <span class="shophelp-login-btn-text">
         <strong>Continue with Google</strong>
-        <small>Fast & easy</small>
+        <small>Quick and secure</small>
       </span>
     </button>
 
@@ -83,17 +79,20 @@ ShopHelp Pro
       <span>OR</span>
     </div>
 
-    <!-- EMAIL -->
+    <!-- EMAIL LOGIN -->
     <button
       type="button"
       onclick="showShopHelpEmailLogin()"
       class="shophelp-email-btn"
     >
-      ✉️ Continue with Email
+      <span>✉️</span>
+      <span>Continue with Email</span>
     </button>
 
+    <!-- SIGNUP -->
     <p class="shophelp-auth-bottom">
-      New to ShopHelp?
+      New to ShopHelp Pro?
+
       <button
         type="button"
         onclick="showShopHelpSignup()"
@@ -106,10 +105,7 @@ ShopHelp Pro
   </div>
 
 
-  <!-- =========================
-       EMAIL LOGIN
-       ========================= -->
-
+  <!-- EMAIL LOGIN SCREEN -->
   <div
     id="shophelpEmailLogin"
     class="shophelp-auth-card shophelp-auth-screen hidden"
@@ -123,8 +119,10 @@ ShopHelp Pro
       ← Back
     </button>
 
+    <div class="shophelp-auth-icon">✉️</div>
+
     <h2 class="shophelp-auth-title">
-      Login to ShopHelp
+      Login with Email
     </h2>
 
     <p class="shophelp-auth-subtitle">
@@ -135,7 +133,7 @@ ShopHelp Pro
       id="email"
       type="email"
       autocomplete="email"
-      placeholder="Email"
+      placeholder="Email address"
       class="shophelp-auth-input"
     >
 
@@ -150,13 +148,22 @@ ShopHelp Pro
     <button
       type="button"
       onclick="loginUser()"
-      class="shophelp-primary-btn"
+      class="shophelp-email-btn"
     >
-      Continue →
+      Login
+    </button>
+
+    <button
+      type="button"
+      onclick="forgotShopHelpPassword()"
+      class="shophelp-link-btn shophelp-forgot-btn"
+    >
+      Forgot password?
     </button>
 
     <p class="shophelp-auth-bottom">
-      New to ShopHelp?
+      New to ShopHelp Pro?
+
       <button
         type="button"
         onclick="showShopHelpSignup()"
@@ -169,10 +176,7 @@ ShopHelp Pro
   </div>
 
 
-  <!-- =========================
-       SIGNUP
-       ========================= -->
-
+  <!-- CREATE SHOP SCREEN -->
   <div
     id="shophelpSignup"
     class="shophelp-auth-card shophelp-auth-screen hidden"
@@ -186,12 +190,14 @@ ShopHelp Pro
       ← Back
     </button>
 
+    <div class="shophelp-auth-icon">🏪</div>
+
     <h2 class="shophelp-auth-title">
       Create your shop
     </h2>
 
     <p class="shophelp-auth-subtitle">
-      Start managing your business with ShopHelp
+      Create your ShopHelp Pro account
     </p>
 
     <input
@@ -206,7 +212,7 @@ ShopHelp Pro
       id="signupEmail"
       type="email"
       autocomplete="email"
-      placeholder="Email"
+      placeholder="Email address"
       class="shophelp-auth-input"
     >
 
@@ -221,13 +227,14 @@ ShopHelp Pro
     <button
       type="button"
       onclick="shopHelpCreateAccount()"
-      class="shophelp-primary-btn"
+      class="shophelp-email-btn"
     >
-      Create My Shop →
+      Create Account
     </button>
 
     <p class="shophelp-auth-bottom">
       Already have an account?
+
       <button
         type="button"
         onclick="showShopHelpEmailLogin()"
@@ -244,19 +251,19 @@ ShopHelp Pro
 <div id="app" class="hidden">
 
 <div class="menu">
-<button onclick="showPage('billing')" data-i18n="Billing">
+<button onclick="showPage('billing', event)" data-i18n="Billing">
   <i class="fa-solid fa-cart-shopping"></i> Billing
 </button>
 
-<button onclick="showPage('inventory')" data-i18n="Inventory">
+<button onclick="showPage('inventory', event)" data-i18n="Inventory">
   <i class="fa-solid fa-box"></i> Inventory
 </button>
 
-<button onclick="showPage('customers')" data-i18n="Customers">
+<button onclick="showPage('customers', event)" data-i18n="Customers">
   <i class="fa-solid fa-users"></i> Customers
 </button>
 
-<button onclick="showPage('expenses')" data-i18n="Expenses">
+<button onclick="showPage('expenses', event)" data-i18n="Expenses">
   <i class="fa-solid fa-chart-line"></i> Expenses
 </button>
 
@@ -621,14 +628,16 @@ document.addEventListener("DOMContentLoaded", translateShopHelpUI);
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { 
-  getAuth, 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"; 
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signOut,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // Firebase config
@@ -643,6 +652,51 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const db = getFirestore(app);
+     async function openShopHelpApp() {
+
+  loginPage.classList.add("hidden");
+  appDiv.classList.remove("hidden");
+
+  await loadData();
+
+  loadChatUI();
+  checkLowStock();
+  renderAll();
+  renderFinances();
+  renderChart();
+}
+     onAuthStateChanged(auth, async (user) => {
+
+  if (!user) {
+
+    loginPage.classList.remove("hidden");
+    appDiv.classList.add("hidden");
+
+    showShopHelpMainLogin();
+
+    return;
+  }
+
+  try {
+
+    await openShopHelpApp();
+
+  } catch (error) {
+
+    console.error("Failed to load ShopHelp:", error);
+
+    await signOut(auth);
+
+    loginPage.classList.remove("hidden");
+    appDiv.classList.add("hidden");
+
+    showShopHelpMainLogin();
+
+    alert("Unable to load your shop. Please try again.");
+
+  }
+
+});
 // --- DATA ---
 let customers=[], products=[], bill=[], expenses=[], sales=[], shopName="";
 let selectedCustomer = null; // ✅ ADD THIS
@@ -711,141 +765,153 @@ document.title = shopName;
   }
 
 }
-/* =========================================
-   SHOPHELP FRIENDLY LOGIN NAVIGATION
-   ========================================= */
-
 window.showShopHelpMainLogin = function () {
 
-  const emailScreen =
-    document.getElementById("shophelpEmailLogin");
+  document
+    .getElementById("shophelpMainLogin")
+    .classList.remove("hidden");
 
-  const signupScreen =
-    document.getElementById("shophelpSignup");
+  document
+    .getElementById("shophelpEmailLogin")
+    .classList.add("hidden");
 
-  if (emailScreen) {
-    emailScreen.classList.add("hidden");
-  }
-
-  if (signupScreen) {
-    signupScreen.classList.add("hidden");
-  }
-
+  document
+    .getElementById("shophelpSignup")
+    .classList.add("hidden");
 };
 
 
 window.showShopHelpEmailLogin = function () {
 
-  const emailScreen =
-    document.getElementById("shophelpEmailLogin");
+  document
+    .getElementById("shophelpMainLogin")
+    .classList.add("hidden");
 
-  const signupScreen =
-    document.getElementById("shophelpSignup");
+  document
+    .getElementById("shophelpEmailLogin")
+    .classList.remove("hidden");
 
-  if (emailScreen) {
-    emailScreen.classList.remove("hidden");
-  }
+  document
+    .getElementById("shophelpSignup")
+    .classList.add("hidden");
 
-  if (signupScreen) {
-    signupScreen.classList.add("hidden");
-  }
-
+  setTimeout(() => {
+    document.getElementById("email")?.focus();
+  }, 100);
 };
 
 
 window.showShopHelpSignup = function () {
 
-  const emailScreen =
-    document.getElementById("shophelpEmailLogin");
+  document
+    .getElementById("shophelpMainLogin")
+    .classList.add("hidden");
 
-  const signupScreen =
-    document.getElementById("shophelpSignup");
+  document
+    .getElementById("shophelpEmailLogin")
+    .classList.add("hidden");
 
-  if (emailScreen) {
-    emailScreen.classList.add("hidden");
-  }
+  document
+    .getElementById("shophelpSignup")
+    .classList.remove("hidden");
 
-  if (signupScreen) {
-    signupScreen.classList.remove("hidden");
-  }
-
+  setTimeout(() => {
+    document.getElementById("shopNameInput")?.focus();
+  }, 100);
 };
-// --- AUTH ---
-window.signupUser = async function(){
-  const email = emailEl.value;
-  const password = passwordEl.value;
-  const shopNameInput = document.getElementById("shopNameInput").value;
 
-  if(!email || !password || !shopNameInput){
-    return showToast("Fill all fields including shop name");
+
+window.loginUser = async function () {
+
+  const email = document
+    .getElementById("email")
+    .value
+    .trim();
+
+  const password = document
+    .getElementById("password")
+    .value;
+
+  if (!email || !password) {
+    showToast("Please enter your email and password");
+    return;
   }
 
-  try{
-    const userCred = await createUserWithEmailAndPassword(auth,email,password);
-    const userId = userCred.user.uid;
-await setDoc(doc(db, "users", userId), {
-  email,
-  shopName: shopNameInput.trim(),
+  try {
 
-  ownerName:"",
-  phone:"",
-  address:"",
-  gstNumber:"",
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
 
-  role:"shopkeeper",
+    // onAuthStateChanged() will open the app.
 
-  status:"pending",
+  } catch (error) {
 
-  shophelpAccess:true,
-  onshopAccess:false,
+    console.error("Email login error:", error);
 
-  createdAt:Date.now()
-});
-  shopName = shopNameInput.trim();
+    let message = "Unable to login.";
 
-await setDoc(doc(db, "shops", userId), {
-  shopName:shopNameInput.trim(),
+    if (error.code === "auth/invalid-credential") {
+      message = "Incorrect email or password.";
+    }
 
-  products:[],
-  customers:[],
-  sales:[],
-  expenses:[],
-  chatHistory:[],
+    if (error.code === "auth/user-not-found") {
+      message = "No account found with this email.";
+    }
 
-  createdAt:Date.now(),
-  updatedAt:Date.now()
-});
-document.querySelector("#shopTitle h1").innerText = shopName;
-    alert("Signup successful");
-  }catch(e){
-    alert(e.message);
+    if (error.code === "auth/wrong-password") {
+      message = "Incorrect password.";
+    }
+
+    if (error.code === "auth/too-many-requests") {
+      message = "Too many attempts. Please try again later.";
+    }
+
+    showToast(message);
   }
-}
+};
+window.forgotShopHelpPassword = async function () {
 
-window.loginUser = async function(){
-  const email = emailEl.value;
-  const password = passwordEl.value;
+  const email = document
+    .getElementById("email")
+    .value
+    .trim();
 
-  try{
-    await signInWithEmailAndPassword(auth, email, password);
-
-    loginPage.classList.add("hidden");
-    appDiv.classList.remove("hidden");
-
-await loadData();
-
-
-    loadChatUI();
-    checkLowStock();
-
-    renderAll();
-    renderFinances();
-    renderChart();
-
-  }catch(e){
-    alert(e.message);
+  if (!email) {
+    showToast("Please enter your email address first.");
+    document.getElementById("email")?.focus();
+    return;
   }
-}
+
+  try {
+
+    await sendPasswordResetEmail(auth, email);
+
+    showToast("Password reset email sent. Check your inbox.");
+
+  } catch (error) {
+
+    console.error("Password reset error:", error);
+
+    let message = "Unable to send password reset email.";
+
+    if (error.code === "auth/user-not-found") {
+      message = "No account found with this email.";
+    }
+
+    if (error.code === "auth/invalid-email") {
+      message = "Please enter a valid email address.";
+    }
+
+    if (error.code === "auth/too-many-requests") {
+      message = "Too many attempts. Please try again later.";
+    }
+
+    showToast(message);
+  }
+};
 window.googleLogin = async function(){
   try {
     const provider = new GoogleAuthProvider();
@@ -860,7 +926,7 @@ window.googleLogin = async function(){
     if (!shopSnap.exists() || !shopSnap.data().shopName?.trim()) {
 
       const enteredName = prompt(
-        "Welcome to ShopHelp Pro!\n\nPlease enter your shop name:"
+        "Welcome to ShopHelp!\n\nPlease enter your shop name:"
       );
 
       const shopName = enteredName ? enteredName.trim() : "";
@@ -886,23 +952,19 @@ window.googleLogin = async function(){
 
       // Also save it against the user
       await setDoc(doc(db, "users", user.uid), {
-        email: user.email || "",
-        shopName: shopName,
-        ownerName: user.displayName || "",
-        role: "shopkeeper"
-      }, { merge: true });
+  email: user.email || "",
+  shopName: shopName,
+  ownerName: user.displayName || "",
+  phone: "",
+  address: "",
+  gstNumber: "",
+  role: "shopkeeper",
+  status: "pending",
+  shophelpAccess: true,
+  onshopAccess: false,
+  createdAt: Date.now()
+}, { merge: true });
     }
-
-    // Continue into ShopHelp
-    loginPage.classList.add("hidden");
-    appDiv.classList.remove("hidden");
-
-    await loadData();
-    loadChatUI();
-    checkLowStock();
-    renderAll();
-    renderFinances();
-    renderChart();
 
   } catch(error) {
     console.error("Google login error:", error);
@@ -915,10 +977,8 @@ location.reload();
 }
 
 // shortcuts
-const emailEl=document.getElementById("email");
-const passwordEl=document.getElementById("password");
-const loginPage=document.getElementById("loginPage");
-const appDiv=document.getElementById("app");
+const loginPage = document.getElementById("loginPage");
+const appDiv = document.getElementById("app");
 const billBody = document.getElementById("billBody");
 const invTable = document.getElementById("invTable");
 const custTable = document.getElementById("custTable");
@@ -928,28 +988,21 @@ const custDropdown = document.getElementById("custDropdown");
 const productDropdown = document.getElementById("productDropdown");
 
 // --- UI ---
-window.showPage=function(p){
+window.showPage=function(p, e){
   document.querySelectorAll("#app .card").forEach(c=>c.classList.add("hidden"));
   document.getElementById(p+"Page").classList.remove("hidden");
-
   document.querySelectorAll(".menu button").forEach(b=>b.classList.remove("active"));
-  event.target.classList.add("active");
 
-  // 🔥 refresh data when opening pages
-  if(p === "expenses"){
-    renderFinances();
-    renderChart();
+  if(e && e.currentTarget){
+    e.currentTarget.classList.add("active");
   }
 
-  if(p === "inventory"){
-    renderInventory();
-  }
-
-  if(p === "customers"){
-    renderCustomers();
-  }
-
+  if(p === "expenses"){ renderFinances(); renderChart(); }
+  if(p === "inventory"){ renderInventory(); }
+  if(p === "customers"){ renderCustomers(); }
 }
+
+
 function showToast(msg){
   let t = document.getElementById("toast");
 
@@ -2852,75 +2905,103 @@ window.searchInvoices = function(){
    SHOPHELP FRIENDLY LOGIN NAVIGATION
    ========================================= */
 
-window.showShopHelpMainLogin = function(){
-
-  document
-    .getElementById("shophelpEmailLogin")
-    .classList.add("hidden");
-
-  document
-    .getElementById("shophelpSignup")
-    .classList.add("hidden");
-
-};
-
-window.showShopHelpEmailLogin = function(){
-
-  document
-    .getElementById("shophelpEmailLogin")
-    .classList.remove("hidden");
-
-  document
-    .getElementById("shophelpSignup")
-    .classList.add("hidden");
-
-};
-
-window.showShopHelpSignup = function(){
-
-  document
-    .getElementById("shophelpSignup")
-    .classList.remove("hidden");
-
-  document
-    .getElementById("shophelpEmailLogin")
-    .classList.add("hidden");
-
-};
-     window.shopHelpCreateAccount = async function(){
-
-  const signupEmail =
-    document.getElementById("signupEmail").value.trim();
-
-  const signupPassword =
-    document.getElementById("signupPassword").value;
-
-  const signupShopName =
-    document.getElementById("shopNameInput").value.trim();
 
 
-  if(!signupEmail || !signupPassword || !signupShopName){
 
+     window.shopHelpCreateAccount = async function () {
+
+  const shopName = document
+    .getElementById("shopNameInput")
+    .value
+    .trim();
+
+  const email = document
+    .getElementById("signupEmail")
+    .value
+    .trim();
+
+  const password = document
+    .getElementById("signupPassword")
+    .value;
+
+  if (!shopName || !email || !password) {
     showToast("Please fill all fields");
-
     return;
   }
 
+  if (password.length < 6) {
+    showToast("Password must be at least 6 characters");
+    return;
+  }
 
-  /*
-     Put the signup values into the
-     existing fields used by signupUser()
-  */
+  try {
 
-  emailEl.value = signupEmail;
-  passwordEl.value = signupPassword;
+    const userCredential =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-  document.getElementById("shopNameInput").value =
-    signupShopName;
+    const userId = userCredential.user.uid;
 
+    // Create user profile
+    await setDoc(
+      doc(db, "users", userId),
+      {
+        email: email,
+        shopName: shopName,
+        ownerName: "",
+        phone: "",
+        address: "",
+        gstNumber: "",
+        role: "shopkeeper",
+        status: "pending",
+        shophelpAccess: true,
+        onshopAccess: false,
+        createdAt: Date.now()
+      }
+    );
 
-  await signupUser();
+    // Create shop
+    await setDoc(
+      doc(db, "shops", userId),
+      {
+        shopName: shopName,
+        products: [],
+        customers: [],
+        sales: [],
+        expenses: [],
+        chatHistory: [],
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      }
+    );
 
+    showToast("Shop created successfully!");
+
+    // Firebase auth state will open the app.
+
+  } catch (error) {
+
+    console.error("Signup error:", error);
+
+    let message = "Unable to create account.";
+
+    if (error.code === "auth/email-already-in-use") {
+      message = "This email is already registered.";
+    }
+
+    if (error.code === "auth/invalid-email") {
+      message = "Please enter a valid email address.";
+    }
+
+    if (error.code === "auth/weak-password") {
+      message = "Password is too weak.";
+    }
+
+    showToast(message);
+  }
 };
 </script>
 <div id="toast" style="

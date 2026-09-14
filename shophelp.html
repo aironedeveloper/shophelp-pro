@@ -61,43 +61,89 @@ ShopHelp Pro
       Manage your shop easily
     </p>
 
-    <!-- CREATE SHOP -->
-    <button
-      type="button"
-      onclick="showShopHelpSignup()"
-      class="shophelp-email-btn"
-      style="width:100%; margin-top:18px;"
-    >
-      🏪 Create Your Shop
-    </button>
+   <!-- GOOGLE -->
+<button
+  type="button"
+  onclick="googleLogin()"
+  class="shophelp-google-btn"
+  style="width:100%; margin-top:18px;"
+>
+  <span class="google-icon">G</span>
 
-    <!-- LOGIN -->
-    <button
-      type="button"
-      onclick="showShopHelpEmailLogin()"
-      class="shophelp-email-btn"
-      style="width:100%; margin-top:12px;"
-    >
-      🔐 Login
-    </button>
+  <span class="shophelp-login-btn-text">
+    <strong>Continue with Google</strong>
+    <small>Login or create your ShopHelp account automatically</small>
+  </span>
+</button>
 
-    <!-- GOOGLE -->
-    <button
-      type="button"
-      onclick="googleLogin()"
-      class="shophelp-google-btn"
-      style="width:100%; margin-top:12px;"
-    >
-      <span class="google-icon">G</span>
+<!-- EMAIL LOGIN -->
+<button
+  type="button"
+  onclick="showShopHelpEmailLogin()"
+  class="shophelp-email-btn"
+  style="width:100%; margin-top:12px;"
+>
+  🔐 Login with Email
+</button>
 
-      <span class="shophelp-login-btn-text">
-        <strong>Continue with Google</strong>
-        <small>Fast and secure</small>
-      </span>
-    </button>
+<!-- CREATE SHOP -->
+<button
+  type="button"
+  onclick="showShopHelpSignup()"
+  class="shophelp-email-btn"
+  style="width:100%; margin-top:12px;"
+>
+  🏪 Create a Shop
+</button>
 
+<p class="shophelp-auth-bottom" style="margin-top:16px;">
+  New to ShopHelp? You do not need to create a ShopHelp account first.
+  Just tap <b>Continue with Google</b>.
+</p>
   </div>
+<!-- GOOGLE / SHOP SETUP SCREEN -->
+<div
+  id="shophelpGoogleShopSetup"
+  class="shophelp-auth-card shophelp-auth-screen hidden"
+>
 
+  <div class="shophelp-auth-icon">🏪</div>
+
+  <h2 class="shophelp-auth-title">
+    Set Up Your Shop
+  </h2>
+
+  <p class="shophelp-auth-subtitle">
+    One last step — enter your shop name.
+  </p>
+
+  <input
+    id="googleShopNameInput"
+    type="text"
+    autocomplete="organization"
+    placeholder="Shop name"
+    class="shophelp-auth-input"
+  >
+
+  <button
+    type="button"
+    onclick="completeGoogleShopSetup()"
+    class="shophelp-email-btn"
+    style="width:100%;"
+  >
+    🏪 Create My Shop
+  </button>
+
+  <button
+    type="button"
+    onclick="cancelGoogleShopSetup()"
+    class="shophelp-back-btn"
+    style="margin-top:10px;"
+  >
+    ← Back
+  </button>
+
+</div>
 
   <!-- EMAIL LOGIN SCREEN -->
   <div
@@ -235,40 +281,7 @@ ShopHelp Pro
   </div>
 
 
-  <!-- GOOGLE SHOP SETUP SCREEN -->
-  <div
-    id="shophelpGoogleShopSetup"
-    class="shophelp-auth-card shophelp-auth-screen hidden"
-  >
-
-    <div class="shophelp-auth-icon">🏪</div>
-
-    <h2 class="shophelp-auth-title">
-      Create Your Shop
-    </h2>
-
-    <p class="shophelp-auth-subtitle">
-      You're almost ready! What is your shop name?
-    </p>
-
-    <input
-      id="googleShopNameInput"
-      type="text"
-      autocomplete="organization"
-      placeholder="Enter your shop name"
-      class="shophelp-auth-input"
-    >
-
-    <button
-      type="button"
-      onclick="completeGoogleShopSetup()"
-      class="shophelp-email-btn"
-      style="width:100%;"
-    >
-      🏪 Continue
-    </button>
-
-  </div>
+  
 
 </div>
 <div id="app" class="hidden">
@@ -657,7 +670,6 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
@@ -783,6 +795,9 @@ const db = getFirestore(app);
 });
 // --- DATA ---
 let customers=[], products=[], bill=[], expenses=[], sales=[], shopName="";
+  
+let authActionInProgress = false;
+let pendingGoogleShopSetup = false;
 let selectedCustomer = null; // ✅ ADD THIS
 let chatHistory = []; // ✅ ADD THIS
 async function saveData(){
@@ -813,174 +828,104 @@ async function loadData(){
 
   const userId = auth.currentUser.uid;
 
-  const shopRef = doc(
-    db,
-    "shops",
-    userId
-  );
+  const shopRef = doc(db, "shops", userId);
+  const shopSnap = await getDoc(shopRef);
 
-  const shopSnap =
-    await getDoc(shopRef);
-
-
-  if(shopSnap.exists()){
-
-    const data = shopSnap.data();
-
-    /*
-      ALWAYS use the actual saved shop name.
-    */
-
-    let savedShopName =
-      data.shopName?.trim() || "";
-
-
-    /*
-      If the shop document somehow doesn't contain
-      the name, check the user profile as backup.
-    */
-
-    if(!savedShopName){
-
-      const userSnap =
-        await getDoc(
-          doc(db, "users", userId)
-        );
-
-      if(userSnap.exists()){
-
-        savedShopName =
-          userSnap.data().shopName?.trim() || "";
-      }
-    }
-
-
-    /*
-      Never silently call a real user's shop
-      "My Shop".
-    */
-
-    if(!savedShopName){
-
-      console.error(
-        "Shop name missing for user:",
-        userId
-      );
-
-      throw new Error(
-        "Shop name is missing."
-      );
-    }
-
-
-    shopName = savedShopName;
-
-
-    const title =
-      document.querySelector(
-        "#shopTitle h1"
-      );
-
-    if(title){
-      title.innerText = shopName;
-    }
-
-
-    document.title = shopName;
-
-
-    console.log(
-      "Loaded shop name:",
-      shopName
-    );
-
-
-    products =
-      data.products || [];
-
-    customers =
-      data.customers || [];
-
-    sales =
-      data.sales || [];
-
-    expenses =
-      data.expenses || [];
-
-    chatHistory =
-      data.chatHistory || [];
-
-
-    customers.forEach(c => {
-
-      if(c.debt === undefined){
-        c.debt = 0;
-      }
-
-    });
-
-
-  } else {
-
-    throw new Error(
-      "Shop does not exist."
-    );
+  if(!shopSnap.exists()){
+    throw new Error("Shop does not exist.");
   }
 
+  const data = shopSnap.data();
+
+  let savedShopName =
+    data.shopName?.trim() || "";
+
+  // Backup: check users document
+  if(!savedShopName){
+
+    const userSnap =
+      await getDoc(doc(db, "users", userId));
+
+    if(userSnap.exists()){
+      savedShopName =
+        userSnap.data().shopName?.trim() || "";
+    }
+  }
+
+  if(!savedShopName){
+    throw new Error("Shop name is missing.");
+  }
+
+  shopName = savedShopName;
+
+  const title =
+    document.querySelector("#shopTitle h1");
+
+  if(title){
+    title.innerText = shopName;
+  }
+
+  document.title = shopName;
+
+  products = data.products || [];
+  customers = data.customers || [];
+  sales = data.sales || [];
+  expenses = data.expenses || [];
+  chatHistory = data.chatHistory || [];
+
+  customers.forEach(c => {
+    if(c.debt === undefined){
+      c.debt = 0;
+    }
+  });
+
+  console.log("Loaded shop name:", shopName);
 }
 /* =========================================
    SHOPHELP PRO LOGIN SYSTEM
    ========================================= */
 
-let authActionInProgress = false;
-let pendingGoogleShopSetup = false;
-
-
 /* =========================================
    SHOW MAIN LOGIN
    ========================================= */
 
-window.showShopHelpMainLogin = function () {
+window.showShopHelpMainLogin = function(){
 
   document
     .getElementById("shophelpMainLogin")
-    .classList.remove("hidden");
+    ?.classList.remove("hidden");
 
   document
     .getElementById("shophelpEmailLogin")
-    .classList.add("hidden");
+    ?.classList.add("hidden");
 
   document
     .getElementById("shophelpSignup")
-    .classList.add("hidden");
+    ?.classList.add("hidden");
 
   document
     .getElementById("shophelpGoogleShopSetup")
-    .classList.add("hidden");
+    ?.classList.add("hidden");
 };
 
 
-/* =========================================
-   SHOW EMAIL LOGIN
-   ========================================= */
-
-window.showShopHelpEmailLogin = function () {
+window.showShopHelpEmailLogin = function(){
 
   document
     .getElementById("shophelpMainLogin")
-    .classList.add("hidden");
+    ?.classList.add("hidden");
 
   document
     .getElementById("shophelpEmailLogin")
-    .classList.remove("hidden");
+    ?.classList.remove("hidden");
 
   document
     .getElementById("shophelpSignup")
-    .classList.add("hidden");
+    ?.classList.add("hidden");
 
   document
     .getElementById("shophelpGoogleShopSetup")
-    .classList.add("hidden");
+    ?.classList.add("hidden");
 
   setTimeout(() => {
     document.getElementById("email")?.focus();
@@ -988,27 +933,23 @@ window.showShopHelpEmailLogin = function () {
 };
 
 
-/* =========================================
-   SHOW CREATE SHOP
-   ========================================= */
-
-window.showShopHelpSignup = function () {
+window.showShopHelpSignup = function(){
 
   document
     .getElementById("shophelpMainLogin")
-    .classList.add("hidden");
+    ?.classList.add("hidden");
 
   document
     .getElementById("shophelpEmailLogin")
-    .classList.add("hidden");
+    ?.classList.add("hidden");
 
   document
     .getElementById("shophelpSignup")
-    .classList.remove("hidden");
+    ?.classList.remove("hidden");
 
   document
     .getElementById("shophelpGoogleShopSetup")
-    .classList.add("hidden");
+    ?.classList.add("hidden");
 
   setTimeout(() => {
     document.getElementById("shopNameInput")?.focus();
@@ -1016,27 +957,23 @@ window.showShopHelpSignup = function () {
 };
 
 
-/* =========================================
-   GOOGLE SHOP SETUP SCREEN
-   ========================================= */
-
-function showGoogleShopSetup() {
+function showGoogleShopSetup(){
 
   document
     .getElementById("shophelpMainLogin")
-    .classList.add("hidden");
+    ?.classList.add("hidden");
 
   document
     .getElementById("shophelpEmailLogin")
-    .classList.add("hidden");
+    ?.classList.add("hidden");
 
   document
     .getElementById("shophelpSignup")
-    .classList.add("hidden");
+    ?.classList.add("hidden");
 
   document
     .getElementById("shophelpGoogleShopSetup")
-    .classList.remove("hidden");
+    ?.classList.remove("hidden");
 
   setTimeout(() => {
     document.getElementById("googleShopNameInput")?.focus();
@@ -1044,23 +981,28 @@ function showGoogleShopSetup() {
 }
 
 
+
+
 /* =========================================
    EMAIL LOGIN
    ========================================= */
 
-window.loginUser = async function () {
+window.loginUser = async function(){
 
-  const email = document
-    .getElementById("email")
-    .value
-    .trim();
+  const email =
+    document.getElementById("email")
+      .value.trim();
 
-  const password = document
-    .getElementById("password")
-    .value;
+  const password =
+    document.getElementById("password")
+      .value;
 
-  if (!email || !password) {
-    showToast("Please enter your email and password");
+  if(!email || !password){
+
+    showToast(
+      "Please enter your email and password."
+    );
+
     return;
   }
 
@@ -1069,49 +1011,68 @@ window.loginUser = async function () {
     authActionInProgress = true;
 
     await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
+  auth,
+  email,
+  password
+);
+
+authActionInProgress = false;
+
+await openShopHelpApp();
+
+  } catch(error) {
+
+    authActionInProgress = false;
+
+    console.error(
+      "Email login error:",
+      error
     );
 
-    authActionInProgress = false;
+    let message =
+      "Unable to login.";
 
-    // onAuthStateChanged will open the shop.
-
-  } catch (error) {
-
-    authActionInProgress = false;
-
-    console.error("Email login error:", error);
-
-    let message = "Unable to login.";
-
-    if (error.code === "auth/invalid-credential") {
-      message = "Incorrect email or password.";
+    if(
+      error.code ===
+      "auth/invalid-credential"
+    ){
+      message =
+        "Incorrect email or password.";
     }
 
-    if (error.code === "auth/user-not-found") {
-      message = "No account found with this email.";
+    else if(
+      error.code ===
+      "auth/user-not-found"
+    ){
+      message =
+        "No account found with this email.";
     }
 
-    if (error.code === "auth/wrong-password") {
-      message = "Incorrect password.";
+    else if(
+      error.code ===
+      "auth/wrong-password"
+    ){
+      message =
+        "Incorrect password.";
     }
 
-    if (error.code === "auth/too-many-requests") {
-      message = "Too many attempts. Please try again later.";
+    else if(
+      error.code ===
+      "auth/too-many-requests"
+    ){
+      message =
+        "Too many attempts. Please try again later.";
     }
 
     showToast(message);
   }
 };
 
-
 /* =========================================
    GOOGLE LOGIN
    ========================================= */
 
-window.googleLogin = async function () {
+window.googleLogin = async function(){
 
   try {
 
@@ -1119,53 +1080,38 @@ window.googleLogin = async function () {
 
     const provider = new GoogleAuthProvider();
 
-    const result = await signInWithPopup(
-      auth,
-      provider
-    );
+    const result =
+      await signInWithPopup(auth, provider);
 
     const user = result.user;
 
-    const shopRef = doc(
-      db,
-      "shops",
-      user.uid
-    );
+    const shopRef =
+      doc(db, "shops", user.uid);
 
-    const shopSnap = await getDoc(shopRef);
+    const shopSnap =
+      await getDoc(shopRef);
 
-    /*
-      EXISTING USER
-      ----------------
-      If shop already exists and has a name,
-      simply let Firebase open the app.
-    */
-
-    if (
+    // Existing ShopHelp user
+    if(
       shopSnap.exists() &&
       shopSnap.data().shopName?.trim()
-    ) {
+    ){
 
+      pendingGoogleShopSetup = false;
       authActionInProgress = false;
+
+      await openShopHelpApp();
 
       return;
     }
 
-
-    /*
-      NEW GOOGLE USER
-      ----------------
-      Show proper ShopHelp screen instead
-      of browser prompt().
-    */
-
+    // New Google user
     pendingGoogleShopSetup = true;
-
     authActionInProgress = false;
 
     showGoogleShopSetup();
 
-  } catch (error) {
+  } catch(error) {
 
     authActionInProgress = false;
 
@@ -1174,32 +1120,28 @@ window.googleLogin = async function () {
       error
     );
 
-    showToast(
-      "Google login failed. Please try again."
+    alert(
+      "Google login failed: " +
+      error.message
     );
   }
 };
-
 
 /* =========================================
    COMPLETE GOOGLE SHOP SETUP
    ========================================= */
 
-window.completeGoogleShopSetup = async function () {
+window.completeGoogleShopSetup = async function(){
 
   const input =
-    document.getElementById(
-      "googleShopNameInput"
-    );
+    document.getElementById("googleShopNameInput");
 
   const newShopName =
     input.value.trim();
 
-  if (!newShopName) {
+  if(!newShopName){
 
-    showToast(
-      "Please enter your shop name."
-    );
+    showToast("Please enter your shop name.");
 
     input.focus();
 
@@ -1208,10 +1150,10 @@ window.completeGoogleShopSetup = async function () {
 
   const user = auth.currentUser;
 
-  if (!user) {
+  if(!user){
 
-    showToast(
-      "Your Google login session expired. Please try again."
+    alert(
+      "Your Google session expired. Please try again."
     );
 
     showShopHelpMainLogin();
@@ -1223,73 +1165,59 @@ window.completeGoogleShopSetup = async function () {
 
     authActionInProgress = true;
 
-    const userId = user.uid;
+    const now = Date.now();
 
-    /*
-      CREATE SHOP
-    */
-
+    // Create ShopHelp shop
     await setDoc(
-      doc(db, "shops", userId),
+      doc(db, "shops", user.uid),
       {
         shopName: newShopName,
+
         products: [],
         customers: [],
         sales: [],
         expenses: [],
         chatHistory: [],
-        createdAt: Date.now(),
-        updatedAt: Date.now()
+
+        createdAt: now,
+        updatedAt: now
+
       },
-      { merge: true }
+      { merge:true }
     );
 
-
-    /*
-      CREATE USER PROFILE
-    */
-
+    // Create ShopHelp user profile
     await setDoc(
-      doc(db, "users", userId),
+      doc(db, "users", user.uid),
       {
         email: user.email || "",
         shopName: newShopName,
         ownerName: user.displayName || "",
+
         phone: "",
         address: "",
         gstNumber: "",
+
         role: "shopkeeper",
         status: "pending",
+
         shophelpAccess: true,
         onshopAccess: false,
-        createdAt: Date.now()
+
+        createdAt: now
+
       },
-      { merge: true }
+      { merge:true }
     );
-
-
-    /*
-      Set local shop name immediately
-    */
 
     shopName = newShopName;
 
     pendingGoogleShopSetup = false;
     authActionInProgress = false;
 
-
-    showToast(
-      "Shop created successfully!"
-    );
-
-
-    /*
-      Open ShopHelp
-    */
-
     await openShopHelpApp();
 
-  } catch (error) {
+  } catch(error) {
 
     authActionInProgress = false;
 
@@ -1302,6 +1230,19 @@ window.completeGoogleShopSetup = async function () {
       "Unable to create your shop. Please try again."
     );
   }
+};
+  window.cancelGoogleShopSetup = async function(){
+
+  pendingGoogleShopSetup = false;
+  authActionInProgress = false;
+
+  try {
+    await signOut(auth);
+  } catch(error) {
+    console.error(error);
+  }
+
+  showShopHelpMainLogin();
 };
 window.logoutUser = async function(){
 await signOut(auth);
